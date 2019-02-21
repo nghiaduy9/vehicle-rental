@@ -17,25 +17,25 @@
  */
 rule EverybodyCanReadEverything {
     description: "Allow all participants read access to all resources"
-    participant: "lqm.SampleParticipant"
+    participant: "org.vehiclerental.SampleParticipant"
     operation: READ
-    resource: "lqm.*"
+    resource: "org.vehiclerental.*"
     action: ALLOW
 }
 
 rule EverybodyCanSubmitTransactions {
     description: "Allow all participants to submit transactions"
-    participant: "lqm.SampleParticipant"
+    participant: "org.vehiclerental.SampleParticipant"
     operation: CREATE
-    resource: "lqm.SampleTransaction"
+    resource: "org.vehiclerental.SampleTransaction"
     action: ALLOW
 }
 
 rule OwnerHasFullAccessToTheirAssets {
     description: "Allow all participants full access to their assets"
-    participant(p): "lqm.SampleParticipant"
+    participant(p): "org.vehiclerental.SampleParticipant"
     operation: ALL
-    resource(r): "lqm.SampleAsset"
+    resource(r): "org.vehiclerental.SampleAsset"
     condition: (r.owner.getIdentifier() === p.getIdentifier())
     action: ALLOW
 }
