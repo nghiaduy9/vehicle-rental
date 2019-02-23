@@ -1,6 +1,6 @@
 # vehicle-rental
 
-Vehicle Rental
+Vehicle rental
 
 ## INSTALLATION
 
@@ -21,5 +21,5 @@ composer network ping --card admin@vehicle-rental # kiểm tra business network 
 6. Chạy REST server:
 
 ```bash
-composer-rest-server -c admin@vehicle-rental -n never -u true -d vehicle-rental-key -w true
+npm start
 ```
