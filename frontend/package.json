@@ -1,7 +1,7 @@
 {
   "name": "vehicle-rental",
-  "description": "Vehicle rental",
   "version": "0.0.1",
+  "description": "Vehicle rental",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "vue": "^2.6.6"
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
