@@ -1,24 +1,55 @@
 namespace org.vehiclerental
 
-participant SampleParticipant identified by participantId {
-  o String participantId
-  o String firstName
-  o String lastName
+participant VehicleOwner identified by OwnerIdentityCardNumber {
+  o String OwnerIdentityCardNumber
+  o String address
+  o String phone
+  o String ownerName
 }
 
-asset SampleAsset identified by assetId {
-  o String assetId
-  --> SampleParticipant owner
-  o String value
+participant Renter identified by RenterIdentityCardNumber {
+  o String RenterIdentityCardNumber
+  o String ownerName
+  o String address
+  o String phone
 }
 
-transaction SampleTransaction {
-  --> SampleAsset asset
-  o String newValue
+concept VehicleDescription {
+  o String licensePlate default = "undefined"
+  --> VehicleOwner vehicleOwner
+  o String ownerName
+  o String identityCardNumber
+  o String model
+  o String color
+  o String state
+  o String yearOfManufacture
+  o String skeletonNumber 
+  o String engineNumber
 }
 
-event SampleEvent {
-  --> SampleAsset asset
-  o String oldValue
-  o String newValue
+asset Vehicle identified by id {
+  o String id
+  o VehicleDescription description
+  o Boolean available
+} 
+
+asset RentalAgreement identified by rentalId{
+  o String rentalId
+  --> VehicleOwner lender
+  --> Renter renter
+  --> Vehicle vehicle 
+  o Integer pricePerDay
+  o String deposit
+}
+
+transaction Rental {
+  o DateTime timeBegin
+  --> RentalAgreement rentalAgreement
+}
+
+transaction Payment {
+  o DateTime timeEnd 
+  o Integer totalPrice
+  o String currency default = 'USD'
+  --> RentalAgreement rentalAgreement
 }

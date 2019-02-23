@@ -1,25 +1,38 @@
-rule EverybodyCanReadEverything {
+rule EveryCanReadAllResources {
     description: "Allow all participants read access to all resources"
-    participant: "org.vehiclerental.SampleParticipant"
+    participant: "org.vehiclerental.*"
     operation: READ
     resource: "org.vehiclerental.*"
     action: ALLOW
 }
 
-rule EverybodyCanSubmitTransactions {
-    description: "Allow all participants to submit transactions"
-    participant: "org.vehiclerental.SampleParticipant"
+rule VehicleOwnerCanDoWithAgreement {
+    description: "Allow vehicle owner can create agreement"
+    participant: "org.vehiclerental.VehicleOwner"
     operation: CREATE
-    resource: "org.vehiclerental.SampleTransaction"
+    resource: "org.vehiclerental.RentalAgreement"
+    action: ALLOW
+}
+rule RenterCanCreateTransactionRental {
+    description: "Allow renter to submit transactions"
+    participant: "org.vehiclerental.Renter"
+    operation: CREATE
+    resource: "org.vehiclerental.Rental"
     action: ALLOW
 }
 
-rule OwnerHasFullAccessToTheirAssets {
-    description: "Allow all participants full access to their assets"
-    participant(p): "org.vehiclerental.SampleParticipant"
-    operation: ALL
-    resource(r): "org.vehiclerental.SampleAsset"
-    condition: (r.owner.getIdentifier() === p.getIdentifier())
+rule VehicleOwnerCanCreateVehicleInformation {
+    description: "Allow vehicle owner to create their assets"
+    participant: "org.vehiclerental.VehicleOwner"
+    operation: CREATE, READ
+    resource: "org.vehiclerental.Vehicle"
+    action: ALLOW
+}
+rule VehicleOwnerCanCreateTransactionPayment {
+    description: "Allow vehicle owner to create transaction"
+    participant: "org.vehiclerental.VehicleOwner"
+    operation: CREATE
+    resource: "org.vehiclerental.Payment"
     action: ALLOW
 }
 
