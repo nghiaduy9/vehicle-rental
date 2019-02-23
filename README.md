@@ -13,13 +13,19 @@ Vehicle rental
 5. Deploying the business network:
 
 ```bash
-composer network install --card PeerAdmin@hlfv1 --archiveFile vehicle-rental@0.0.1.bna
-composer card import --file networkadmin.card
-composer network ping --card admin@vehicle-rental # kiểm tra business network đã được deploy thành công hay chưa
+vehicle-rental$ composer network install --card PeerAdmin@hlfv1 --archiveFile vehicle-rental@0.0.1.bna
+vehicle-rental$ composer card import --file networkadmin.card
+vehicle-rental$ composer network ping --card admin@vehicle-rental # kiểm tra business network đã được deploy thành công hay chưa
 ```
 
 6. Chạy REST server:
 
 ```bash
-npm start
+vehicle-rental$ npm start
+```
+
+7. Chạy Vue app:
+
+```bash
+vehicle-rental/frontend$ npm serve
 ```
