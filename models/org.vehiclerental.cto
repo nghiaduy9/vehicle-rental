@@ -30,7 +30,9 @@ concept VehicleDescription {
 asset Vehicle identified by id {
   o String id
   o VehicleDescription description
-  o Boolean available
+  o Boolean available default = true
+  o String renterId default = "undefined"
+  o DateTime timeBegin default = "undefined"
 }
 
 asset RentalAgreement identified by rentalId{
