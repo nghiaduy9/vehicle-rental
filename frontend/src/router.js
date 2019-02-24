@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Index from './views/index.vue'
 import Login from './views/login.vue'
 import Dashboard from './views/dashboard.vue'
+import NewVehicle from './views/new-vehicle.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard
+    },
+    {
+      path: '/new-vehicle',
+      name: 'new-vehicle',
+      component: NewVehicle
     }
   ]
 })
