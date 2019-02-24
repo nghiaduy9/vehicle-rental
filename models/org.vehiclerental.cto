@@ -2,14 +2,14 @@ namespace org.vehiclerental
 
 participant VehicleOwner identified by OwnerIdentityCardNumber {
   o String OwnerIdentityCardNumber
+  o String name
   o String address
   o String phone
-  o String ownerName
 }
 
 participant Renter identified by RenterIdentityCardNumber {
   o String RenterIdentityCardNumber
-  o String ownerName
+  o String name
   o String address
   o String phone
 }
@@ -23,7 +23,7 @@ concept VehicleDescription {
   o String color
   o String state
   o String yearOfManufacture
-  o String skeletonNumber 
+  o String skeletonNumber
   o String engineNumber
 }
 
@@ -31,13 +31,13 @@ asset Vehicle identified by id {
   o String id
   o VehicleDescription description
   o Boolean available
-} 
+}
 
 asset RentalAgreement identified by rentalId{
   o String rentalId
   --> VehicleOwner lender
   --> Renter renter
-  --> Vehicle vehicle 
+  --> Vehicle vehicle
   o Integer pricePerDay
   o String deposit
 }
@@ -48,7 +48,7 @@ transaction Rental {
 }
 
 transaction Payment {
-  o DateTime timeEnd 
+  o DateTime timeEnd
   o Integer totalPrice
   o String currency default = 'USD'
   --> RentalAgreement rentalAgreement
