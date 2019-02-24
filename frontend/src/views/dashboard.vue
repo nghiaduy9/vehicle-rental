@@ -1,9 +1,7 @@
 <template>
   <div id="dashboard" class="container">
     <div class="card" v-if="user === 'renter'">
-      <div class="card-header">
-        Renting
-      </div>
+      <div class="card-header">Renting</div>
       <div class="card-body">
         <table class="table">
           <thead>
@@ -33,9 +31,7 @@
     </div>
     <hr>
     <div class="card" v-if="user === 'renter'">
-      <div class="card-header">
-        Available
-      </div>
+      <div class="card-header">Available</div>
       <div class="card-body">
         <table class="table">
           <thead>
@@ -64,9 +60,7 @@
       </div>
     </div>
     <div class="card" v-if="user === 'lender'">
-      <div class="card-header">
-        My vehicle
-      </div>
+      <div class="card-header">My vehicles</div>
       <div class="card-body">
         <table class="table">
           <thead>
@@ -105,41 +99,35 @@
 <script>
 import Axios from 'axios'
 import VueCookies from 'vue-cookies'
-import { functionExpression } from 'babel-types';
+import { functionExpression } from 'babel-types'
 
 function getAllVehicles() {
-  Axios.get('http://localhost:3000/api/Vehicle')
-  .then((vehicles) => {
+  Axios.get('http://localhost:3000/api/Vehicle').then((vehicles) => {
     return vehicles
   })
 }
 
 function getAvailableVehicles() {
-  Axios.get('http://localhost:3000/api/Vehicle?filter=(%7B%22available%22%3A%20true%7D)')
-  .then((availableVehicles) => {
+  Axios.get('http://localhost:3000/api/Vehicle?filter=(%7B%22available%22%3A%20true%7D)').then((availableVehicles) => {
     return availableVehicles
   })
 }
 
 function getRentingVehicles(id) {
-  let url = 
-  Axios.get(url)
-  .then((rentingVehicles) => {
+  let url = Axios.get(url).then((rentingVehicles) => {
     return rentingVehicles
   })
 }
 
 function getMyVehicles(id) {
-  let url =
-  Axios.get(url)
-  .then((myVehicles) => {
+  let url = Axios.get(url).then((myVehicles) => {
     return myVehicles
   })
 }
 
 export default {
   name: 'dashboard',
-  data: function () {
+  data: function() {
     return {
       rentingVehicles: [],
       availableVehicles: [],
@@ -154,8 +142,7 @@ export default {
       this.id = await VueCookies.get('id')
       if (this.user === 'lender') {
         myVehicles = await getMyVehicles(this.id)
-      }
-      else {
+      } else {
         availableVehicles = await getAvailableVehicles()
         rentingVehicles = await getRentingVehicles(this.id)
       }
@@ -165,4 +152,3 @@ export default {
   }
 }
 </script>
-

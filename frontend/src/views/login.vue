@@ -74,9 +74,7 @@
 <script>
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
-import Router from 'vue-router'
-
-const router = new Router()
+import router from '../router.js'
 
 function resetNoti(h) {
   setTimeout(function() {
@@ -115,7 +113,7 @@ export default {
           if (response.status === 200) {
             VueCookies.set('account-type', 'renter')
             VueCookies.set('id', h.identityNumber)
-            h.noti = 'Sucessful'
+            h.noti = 'Successful'
             resetNoti(h)
             router.push('/dashboard')
           }
@@ -130,7 +128,7 @@ export default {
                   if (r.status === 200) {
                     VueCookies.set('account-type', 'lender')
                     VueCookies.set('id', h.identityNumber)
-                    h.noti = 'Sucessful'
+                    h.noti = 'Successful'
                     resetNoti(h)
                     router.push('/dashboard')
                   }
@@ -138,7 +136,7 @@ export default {
                 .catch(function(e) {
                   if (e) {
                     if (e.response.status === 404) {
-                      h.noti = 'Login unsucessfully'
+                      h.noti = 'Login unSuccessfully'
                       resetNoti(h)
                       document.getElementById('notice').classList.add('text-danger')
                       document.getElementById('notice').classList.remove('text-success')
