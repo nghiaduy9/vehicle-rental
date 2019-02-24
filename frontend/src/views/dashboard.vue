@@ -54,7 +54,9 @@
                 <td>{{ availableVehicle.description.color }}</td>
                 <td>{{ availableVehicle.description.state }}</td>
                 <td>{{ availableVehicle.description.yearOfManufacture }}</td>
-                <td><i class="fas fa-truck-moving"></i></td>
+                <td>
+                  <i class="fas fa-truck-moving"></i>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -101,13 +103,6 @@
 <script>
 import Axios from 'axios'
 import VueCookies from 'vue-cookies'
-import { functionExpression } from 'babel-types'
-
-function getAllVehicles() {
-  Axios.get('http://localhost:3000/api/Vehicle').then((vehicles) => {
-    return vehicles
-  })
-}
 
 function getAvailableVehicles() {
   Axios.get('http://localhost:3000/api/Vehicle?filter=%7B%22available%22%3A%20true%7D').then((availableVehicles) => {
@@ -116,14 +111,17 @@ function getAvailableVehicles() {
 }
 
 function getRentingVehicles(id) {
-  let url = "http://localhost:3000/api/Vehicle?filter=%7B%22renterId%22%3A%20%22" + id + "%22%7D"
+  let url = 'http://localhost:3000/api/Vehicle?filter=%7B%22renterId%22%3A%20%22' + id + '%22%7D'
   Axios.get(url).then((rentingVehicles) => {
     return rentingVehicles
   })
 }
 
 function getMyVehicles(id) {
-  let url = "http://localhost:3000/api/Vehicle?filter=%7B%22description%22%3A%20%7B%20%22identityCardNumber%22%3A%20%22" + id + "%22%20%7D%7D"
+  let url =
+    'http://localhost:3000/api/Vehicle?filter=%7B%22description%22%3A%20%7B%20%22identityCardNumber%22%3A%20%22' +
+    id +
+    '%22%20%7D%7D'
   Axios.get(url).then((myVehicles) => {
     return myVehicles
   })

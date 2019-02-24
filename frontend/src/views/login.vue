@@ -4,7 +4,7 @@
       <div class="card">
         <h4 class="card-header text-center">Sign In</h4>
         <div class="card-body">
-          <span class="text-success text-center" id="notice">{{noti}}</span>
+          <span class="text-success text-center" id="notice">{{ noti }}</span>
           <form @submit.prevent="login">
             <div class="form-group">
               <input
@@ -29,7 +29,7 @@
       <div class="card">
         <h4 class="card-header text-center">Sign Up</h4>
         <div class="card-body">
-          <span class="text-success text-center">{{noti}}</span>
+          <span class="text-success text-center">{{ noti }}</span>
           <form @submit.prevent="signup">
             <div class="form-group d-flex justify-content-between">
               <span>Account type:</span>
@@ -158,7 +158,7 @@ export default {
             address: this.address,
             phone: this.phone
           })
-          .then(function(response) {
+          .then(function() {
             h.noti = 'Successful'
             setTimeout(h.changeMode, 1000)
           })
@@ -178,7 +178,7 @@ export default {
             address: this.address,
             phone: this.phone
           })
-          .then(function(response) {
+          .then(function() {
             this.noti = 'Successfull'
             resetNoti(h)
             setTimeout(this.changeMode, 1000)
