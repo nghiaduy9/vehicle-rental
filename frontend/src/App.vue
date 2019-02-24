@@ -3,3 +3,7 @@
     <router-view/>
   </div>
 </template>
+
+<style lang="sass">
+@import './styles/index.scss'
+</style>
