@@ -42,6 +42,7 @@
               <th scope="col">Color</th>
               <th scope="col">State</th>
               <th scope="col">Year of manufacture</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -53,6 +54,7 @@
                 <td>{{ availableVehicle.description.color }}</td>
                 <td>{{ availableVehicle.description.state }}</td>
                 <td>{{ availableVehicle.description.yearOfManufacture }}</td>
+                <td><i class="fas fa-truck-moving"></i></td>
               </tr>
             </template>
           </tbody>
@@ -108,19 +110,21 @@ function getAllVehicles() {
 }
 
 function getAvailableVehicles() {
-  Axios.get('http://localhost:3000/api/Vehicle?filter=(%7B%22available%22%3A%20true%7D)').then((availableVehicles) => {
+  Axios.get('http://localhost:3000/api/Vehicle?filter=%7B%22available%22%3A%20true%7D').then((availableVehicles) => {
     return availableVehicles
   })
 }
 
 function getRentingVehicles(id) {
-  let url = Axios.get(url).then((rentingVehicles) => {
+  let url = "http://localhost:3000/api/Vehicle?filter=%7B%22renterId%22%3A%20%22" + id + "%22%7D"
+  Axios.get(url).then((rentingVehicles) => {
     return rentingVehicles
   })
 }
 
 function getMyVehicles(id) {
-  let url = Axios.get(url).then((myVehicles) => {
+  let url = "http://localhost:3000/api/Vehicle?filter=%7B%22description%22%3A%20%7B%20%22identityCardNumber%22%3A%20%22" + id + "%22%20%7D%7D"
+  Axios.get(url).then((myVehicles) => {
     return myVehicles
   })
 }
@@ -141,10 +145,10 @@ export default {
       this.user = await VueCookies.get('account-type')
       this.id = await VueCookies.get('id')
       if (this.user === 'lender') {
-        myVehicles = await getMyVehicles(this.id)
+        this.myVehicles = await getMyVehicles(this.id)
       } else {
-        availableVehicles = await getAvailableVehicles()
-        rentingVehicles = await getRentingVehicles(this.id)
+        this.availableVehicles = await getAvailableVehicles()
+        this.rentingVehicles = await getRentingVehicles(this.id)
       }
     } catch (err) {
       console.error(err)
