@@ -42,7 +42,6 @@
             </div>
             <div class="form-group">
               <input
-                name
                 class="form-control"
                 placeholder="Identity card number"
                 type="number"
@@ -157,7 +156,7 @@ export default {
           .post('http://localhost:3000/api/Renter', {
             $class: 'org.vehiclerental.Renter',
             RenterIdentityCardNumber: this.identityNumber,
-            ownerName: this.name,
+            name: this.name,
             address: this.address,
             phone: this.phone
           })
@@ -177,7 +176,7 @@ export default {
           .post('http://localhost:3000/api/VehicleOwner', {
             $class: 'org.vehiclerental.VehicleOwner',
             OwnerIdentityCardNumber: this.identityNumber,
-            ownerName: this.name,
+            name: this.name,
             address: this.address,
             phone: this.phone
           })
