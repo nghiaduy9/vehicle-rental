@@ -2,7 +2,7 @@
   <div class="container w-25 mx-auto my-5">
     <div v-if="loginMode">
       <div class="card">
-        <h4 class="card-header text-center">Sign Up</h4>
+        <h4 class="card-header text-center">Sign In</h4>
         <div class="card-body">
           <span class="text-success text-center" id="notice">{{noti}}</span>
           <form @submit.prevent="login">
@@ -18,14 +18,14 @@
               <input class="form-control" placeholder="Password" type="password">
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">Login</button>
+              <button type="submit" class="btn btn-primary btn-block">Sign in</button>
             </div>
-            <span class="btn-link" @click="changeMode">Register</span>
+            <span class="btn-link" @click="changeMode">Not have account? Sign up now</span>
           </form>
         </div>
       </div>
     </div>
-    <div class="register" v-else>
+    <div v-else>
       <div class="card">
         <h4 class="card-header text-center">Sign Up</h4>
         <div class="card-body">
@@ -64,7 +64,7 @@
             <div class="form-group">
               <button type="submit" class="btn btn-primary btn-block">Sign up</button>
             </div>
-            <span class="btn-link" @click="changeMode">Have account? Login</span>
+            <span class="btn-link" @click="changeMode">Have account? Sign in now</span>
           </form>
         </div>
       </div>
