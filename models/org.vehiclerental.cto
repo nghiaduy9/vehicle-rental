@@ -14,10 +14,10 @@ participant Renter identified by RenterIdentityCardNumber {
   o String phone
 }
 
-concept VehicleDescription {
+asset Vehicle identified by vehicleId {
+  o String vehicleId
   o String licensePlate default = "undefined"
-  --> VehicleOwner vehicleOwner
-  o String ownerName
+  o String ownerId
   o String identityCardNumber
   o String model
   o String color
@@ -25,11 +25,6 @@ concept VehicleDescription {
   o String yearOfManufacture
   o String skeletonNumber
   o String engineNumber
-}
-
-asset Vehicle identified by id {
-  o String id
-  o VehicleDescription description
   o Boolean available default = true
   o String renterId default = "undefined"
   o DateTime timeBegin default = "undefined"
