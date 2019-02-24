@@ -28,5 +28,5 @@ vehicle-rental$ npm start
 7. Chạy Vue app:
 
 ```bash
-vehicle-rental/frontend$ npm serve
+vehicle-rental/frontend$ npm run serve
 ```
