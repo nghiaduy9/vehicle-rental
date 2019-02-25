@@ -24,7 +24,9 @@
                 <td>{{ rentingVehicle.description.model }}</td>
                 <td>{{ rentingVehicle.description.color }}</td>
                 <td>{{ rentingVehicle.timeBegin }}</td>
-                <td><i class="fas fa-donate"></i></td>
+                <td>
+                  <i class="fas fa-donate"></i>
+                </td>
               </tr>
             </template>
           </tbody>
@@ -102,6 +104,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Axios from 'axios'
 import VueCookies from 'vue-cookies'
@@ -113,7 +116,7 @@ function getAvailableVehicles() {
 }
 
 function getRentingVehicles(id) {
-  let url = 'http://localhost:3000/api/queries/getRentingVehicles?renterId=' + id 
+  let url = 'http://localhost:3000/api/queries/getRentingVehicles?renterId=' + id
   Axios.get(url).then((rentingVehicles) => {
     return rentingVehicles
   })
