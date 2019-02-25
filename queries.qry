@@ -1,0 +1,23 @@
+/** Queries for Vehicle Rental business network
+*/
+
+query getAvailableVehicles {
+  description: "Select all available vehicles"
+  statement:
+      SELECT org.vehiclerental.Vehicle
+          WHERE (available == true)
+}
+
+query getRentingVehicles {
+  description: "Select all vehicles that user is renting"
+  statement:
+      SELECT org.vehiclerental.Vehicle
+          WHERE (renterId == _$renterId)
+}
+
+query getMyVehicles {
+  description: "Select all my vehicle on network"
+  statement: 
+      SELECT org.vehiclerental.Vehicle
+          WHERE (ownerId == _$ownerId)
+}

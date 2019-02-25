@@ -12,6 +12,7 @@
               <th scope="col">Model</th>
               <th scope="col">Color</th>
               <th scope="col">Time begin</th>
+              <th scope="col">Pay</th>
             </tr>
           </thead>
           <tbody>
@@ -23,6 +24,7 @@
                 <td>{{ rentingVehicle.description.model }}</td>
                 <td>{{ rentingVehicle.description.color }}</td>
                 <td>{{ rentingVehicle.timeBegin }}</td>
+                <td><i class="fas fa-donate"></i></td>
               </tr>
             </template>
           </tbody>
@@ -105,23 +107,20 @@ import Axios from 'axios'
 import VueCookies from 'vue-cookies'
 
 function getAvailableVehicles() {
-  Axios.get('http://localhost:3000/api/Vehicle?filter=%7B%22available%22%3A%20true%7D').then((availableVehicles) => {
+  Axios.get('http://localhost:3000/api/queries/getAvailableVehicles').then((availableVehicles) => {
     return availableVehicles
   })
 }
 
 function getRentingVehicles(id) {
-  let url = 'http://localhost:3000/api/Vehicle?filter=%7B%22renterId%22%3A%20%22' + id + '%22%7D'
+  let url = 'http://localhost:3000/api/queries/getRentingVehicles?renterId=' + id 
   Axios.get(url).then((rentingVehicles) => {
     return rentingVehicles
   })
 }
 
 function getMyVehicles(id) {
-  let url =
-    'http://localhost:3000/api/Vehicle?filter=%7B%22description%22%3A%20%7B%20%22identityCardNumber%22%3A%20%22' +
-    id +
-    '%22%20%7D%7D'
+  let url = 'http://localhost:3000/api/queries/getMyVehicles?ownerId=' + id
   Axios.get(url).then((myVehicles) => {
     return myVehicles
   })
