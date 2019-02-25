@@ -153,9 +153,7 @@ export default {
     addNewVehicle: function() {
       router.push('/new-vehicle')
     },
-    removeVehicle: function() {
-      
-    }
+    removeVehicle: function() {}
   },
   mounted: async function() {
     try {
