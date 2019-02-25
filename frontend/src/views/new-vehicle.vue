@@ -53,7 +53,7 @@ import VueCookies from 'vue-cookies'
 import router from '../router.js'
 
 export default {
-  name: 'Login',
+  name: 'NewVehicle',
   data: function() {
     return {
       noti: '',
