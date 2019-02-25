@@ -105,8 +105,6 @@ export default {
     },
     login: function() {
       const h = this
-      document.getElementById('notice').classList.add('text-success')
-      document.getElementById('notice').classList.remove('text-danger')
       axios
         .get('http://localhost:3000/api/Renter/' + this.identityNumber)
         .then(function(response) {
@@ -115,11 +113,12 @@ export default {
             VueCookies.set('id', h.identityNumber)
             h.noti = 'Successful'
             resetNoti(h)
+            document.getElementById('notice').classList.remove('text-danger')
+            document.getElementById('notice').classList.add('text-success')
             router.push('/dashboard')
           }
         })
         .catch(function(error) {
-          console.log(error)
           if (error) {
             if (error.response.status === 404) {
               axios
@@ -130,16 +129,18 @@ export default {
                     VueCookies.set('id', h.identityNumber)
                     h.noti = 'Successful'
                     resetNoti(h)
+                    document.getElementById('notice').classList.remove('text-danger')
+                    document.getElementById('notice').classList.add('text-success')
                     router.push('/dashboard')
                   }
                 })
                 .catch(function(e) {
                   if (e) {
                     if (e.response.status === 404) {
-                      h.noti = 'Login unSuccessfully'
+                      h.noti = 'Unsuccessful'
                       resetNoti(h)
-                      document.getElementById('notice').classList.add('text-danger')
                       document.getElementById('notice').classList.remove('text-success')
+                      document.getElementById('notice').classList.add('text-danger')
                     }
                   }
                 })
@@ -164,7 +165,6 @@ export default {
           })
           .catch(function(error) {
             if (error) {
-              console.log(error)
               h.noti = 'Unsuccessful'
               resetNoti(h)
             }
@@ -179,7 +179,7 @@ export default {
             phone: this.phone
           })
           .then(function() {
-            this.noti = 'Successfull'
+            this.noti = 'Successful'
             resetNoti(h)
             setTimeout(this.changeMode, 1000)
           })
