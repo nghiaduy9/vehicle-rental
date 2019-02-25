@@ -79,3 +79,7 @@ dist
 
 # DynamoDB Local files
 .dynamodb/
+
+# Build files
+*.bna
+*.card
