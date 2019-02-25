@@ -1,5 +1,6 @@
 <template>
   <div id="dashboard" class="container">
+    <h1>DASHBOARD</h1>
     <div class="card" v-if="user === 'renter'">
       <div class="card-header">Renting</div>
       <div class="card-body">
@@ -82,6 +83,7 @@
               <th scope="col">Available</th>
               <th scope="col">Renter</th>
               <th scope="col">Time begin</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -96,10 +98,16 @@
                 <td>{{ myVehicle.available }}</td>
                 <td>{{ myVehicle.renterId }}</td>
                 <td>{{ myVehicle.timeBegin }}</td>
+                <td>
+                  <i class="far fa-times-circle" @click="removeVehicle"></i>
+                </td>
               </tr>
             </template>
           </tbody>
         </table>
+        <div class="card-footer">
+          <button type="button" class="btn btn-primary" @click="addNewVehicle">Add new vehicle</button>
+        </div>
       </div>
     </div>
   </div>
@@ -108,6 +116,7 @@
 <script>
 import Axios from 'axios'
 import VueCookies from 'vue-cookies'
+import router from '../router.js'
 
 function getAvailableVehicles() {
   Axios.get('http://localhost:3000/api/queries/getAvailableVehicles').then((availableVehicles) => {
@@ -138,6 +147,14 @@ export default {
       myVehicles: [],
       user: '',
       id: ''
+    }
+  },
+  methods: {
+    addNewVehicle: function() {
+      router.push('/new-vehicle')
+    },
+    removeVehicle: function() {
+      
     }
   },
   mounted: async function() {
