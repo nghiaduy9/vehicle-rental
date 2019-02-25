@@ -16,7 +16,7 @@ participant Renter identified by RenterIdentityCardNumber {
 
 asset Vehicle identified by vehicleId {
   o String vehicleId
-  o String licensePlate 
+  o String licensePlate
   o String ownerId
   o String identityCardNumber
   o String model
@@ -26,8 +26,8 @@ asset Vehicle identified by vehicleId {
   o String skeletonNumber
   o String engineNumber
   o Boolean available default = true
-  o String renterId 
-  o DateTime timeBegin default = "Thu Jan 01 1970 08:00:01 GMT+0800 (Indochina Time)"
+  o String renterId
+  o DateTime timeBegin default = '1970-01-01T00:00:00.000Z'
 }
 
 asset RentalAgreement identified by rentalId{

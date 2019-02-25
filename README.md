@@ -13,8 +13,8 @@ Vehicle rental
 5. Deploying the business network _(v0.0.2)_:
 
 ```bash
-vehicle-rental$ composer network install -c PeerAdmin@hlfv1 -a vehicle-rental@0.0.3.bna
-vehicle-rental$ composer network start -n vehicle-rental -V 0.0.3 -A admin -S adminpw -c PeerAdmin@hlfv1 -f networkadmin.card
+vehicle-rental$ composer network install -c PeerAdmin@hlfv1 -a vehicle-rental@0.0.4.bna
+vehicle-rental$ composer network start -n vehicle-rental -V 0.0.4 -A admin -S adminpw -c PeerAdmin@hlfv1 -f networkadmin.card
 vehicle-rental$ composer card import -f networkadmin.card
 vehicle-rental$ composer network ping -c admin@vehicle-rental # kiểm tra business network đã được deploy thành công hay chưa
 ```
