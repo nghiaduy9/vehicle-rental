@@ -2,19 +2,33 @@ query getAvailableVehicles {
   description: "Select all available vehicles"
   statement:
       SELECT org.vehiclerental.Vehicle
-          WHERE (available == true)
+          WHERE (vehicleStatus == 'available')
 }
 
-query getRentingVehicles {
+query getRenterVehicles {
   description: "Select all vehicles that user is renting"
   statement:
       SELECT org.vehiclerental.Vehicle
-          WHERE (renterId == _$renterId)
+          WHERE (renter.RenterIdentityCardNumber == _$renterId)
 }
 
-query getMyVehicles {
+query getOwnerVehicles {
   description: "Select all my vehicle on network"
   statement:
       SELECT org.vehiclerental.Vehicle
-          WHERE (ownerId == _$ownerId)
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId)
+}
+
+query getLendHistory {
+  description: "Select all history of a lender"
+  statement:
+      SELECT org.vehiclerental.RentalAgreement
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId)
+}
+
+query getRentHistory {
+  description: "Select all history of a renter"
+  statement:
+      SELECT org.vehiclerental.RentalAgreement
+          WHERE (renter.RenterIdentityCardNumber == _$renterId)
 }

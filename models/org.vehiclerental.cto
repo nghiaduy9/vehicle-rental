@@ -1,10 +1,24 @@
 namespace org.vehiclerental
 
+enum accType {
+  o renter
+  o lender
+}
+
+enum Status {
+  o inUse
+  o available
+  o pending
+  o onPayment
+}
+
 participant VehicleOwner identified by OwnerIdentityCardNumber {
   o String OwnerIdentityCardNumber
   o String name
   o String address
   o String phone
+  o accType accountType
+  o String password
 }
 
 participant Renter identified by RenterIdentityCardNumber {
@@ -12,12 +26,14 @@ participant Renter identified by RenterIdentityCardNumber {
   o String name
   o String address
   o String phone
+  o accType accountType
+  o String password
 }
 
 asset Vehicle identified by vehicleId {
   o String vehicleId
   o String licensePlate
-  o String ownerId
+  --> VehicleOwner lender
   o String identityCardNumber
   o String model
   o String color
@@ -25,8 +41,9 @@ asset Vehicle identified by vehicleId {
   o String yearOfManufacture
   o String skeletonNumber
   o String engineNumber
-  o Boolean available default = true
-  o String renterId
+  o Status vehicleStatus default = 'available'
+  --> Renter renter
+  o Double pricePerDay
   o DateTime timeBegin default = '1970-01-01T00:00:00.000Z'
 }
 
@@ -35,18 +52,25 @@ asset RentalAgreement identified by rentalId{
   --> VehicleOwner lender
   --> Renter renter
   --> Vehicle vehicle
-  o Integer pricePerDay
   o String deposit
+  o DateTime timeBegin 
+  o DateTime timeEnd
+  o Double totalPrice
+  o String currency default = 'USD'
 }
 
 transaction Rental {
-  o DateTime timeBegin
   --> RentalAgreement rentalAgreement
 }
 
-transaction Payment {
-  o DateTime timeEnd
-  o Integer totalPrice
-  o String currency default = 'USD'
+transaction AcceptRental {  
+  --> RentalAgreement rentalAgreement
+}
+
+transaction Payment { 
+  --> RentalAgreement rentalAgreement
+}
+
+transaction ConfirmPayment {
   --> RentalAgreement rentalAgreement
 }

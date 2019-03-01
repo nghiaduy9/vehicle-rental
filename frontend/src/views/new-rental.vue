@@ -60,6 +60,7 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import router from '../router.js'

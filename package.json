@@ -1,7 +1,7 @@
 {
   "name": "vehicle-rental",
   "description": "Vehicle rental",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "engines": {
     "composer": "^0.20.7"
   },

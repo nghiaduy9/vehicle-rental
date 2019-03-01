@@ -20,14 +20,76 @@
             <template v-for="rentingVehicle of rentingVehicles">
               <tr :key="rentingVehicle.id">
                 <td scope="row">{{ rentingVehicle.id }}</td>
-                <td>{{ rentingVehicle.description.vehicleOwner.ownerName }}</td>
-                <td>{{ rentingVehicle.description.licensePlate }}</td>
-                <td>{{ rentingVehicle.description.model }}</td>
-                <td>{{ rentingVehicle.description.color }}</td>
+                <td>{{ rentingVehicle.vehicleOwner.ownerName }}</td>
+                <td>{{ rentingVehicle.licensePlate }}</td>
+                <td>{{ rentingVehicle.model }}</td>
+                <td>{{ rentingVehicle.color }}</td>
                 <td>{{ rentingVehicle.timeBegin }}</td>
                 <td>
-                  <i class="fas fa-donate"></i>
+                  <button class="btn btn-link" @click="payment(rentingVehicle.id)">
+                    <i class="fas fa-donate"></i>
+                  </button>
                 </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <hr>
+    <div class="card" v-if="user === 'renter'">
+      <div class="card-header">Pening</div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Owner</th>
+              <th scope="col">License plate</th>
+              <th scope="col">Model</th>
+              <th scope="col">Color</th>
+              <th scope="col">Time begin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="pendingVehicle of pendingVehicles">
+              <tr :key="pendingVehicle.id">
+                <td scope="row">{{ pendingVehicle.id }}</td>
+                <td>{{ pendingVehicle.vehicleOwner.ownerName }}</td>
+                <td>{{ pendingVehicle.licensePlate }}</td>
+                <td>{{ pendingVehicle.model }}</td>
+                <td>{{ pendingVehicle.color }}</td>
+                <td>{{ pendingVehicle.timeBegin }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <hr>
+    <div class="card" v-if="user === 'renter'">
+      <div class="card-header">Waiting accept payment</div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Owner</th>
+              <th scope="col">License plate</th>
+              <th scope="col">Model</th>
+              <th scope="col">Color</th>
+              <th scope="col">Time begin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="rentingVehicle of rentingVehicles">
+              <tr :key="rentingVehicle.id">
+                <td scope="row">{{ rentingVehicle.id }}</td>
+                <td>{{ rentingVehicle.vehicleOwner.ownerName }}</td>
+                <td>{{ rentingVehicle.licensePlate }}</td>
+                <td>{{ rentingVehicle.model }}</td>
+                <td>{{ rentingVehicle.color }}</td>
+                <td>{{ rentingVehicle.timeBegin }}</td>
               </tr>
             </template>
           </tbody>
@@ -54,13 +116,15 @@
             <template v-for="availableVehicle of availableVehicles">
               <tr :key="availableVehicle.id">
                 <td scope="row">{{ availableVehicle.id }}</td>
-                <td>{{ availableVehicle.description.licensePlate }}</td>
-                <td>{{ availableVehicle.description.model }}</td>
-                <td>{{ availableVehicle.description.color }}</td>
-                <td>{{ availableVehicle.description.state }}</td>
-                <td>{{ availableVehicle.description.yearOfManufacture }}</td>
+                <td>{{ availableVehicle.licensePlate }}</td>
+                <td>{{ availableVehicle.model }}</td>
+                <td>{{ availableVehicle.color }}</td>
+                <td>{{ availableVehicle.state }}</td>
+                <td>{{ availableVehicle.yearOfManufacture }}</td>
                 <td>
-                  <i class="fas fa-truck-moving"></i>
+                  <button class="btn btn-link">
+                    <i class="fas fa-truck-moving" @click="rent(availableVehicle.id)"></i>
+                  </button>
                 </td>
               </tr>
             </template>
@@ -80,7 +144,6 @@
               <th scope="col">Color</th>
               <th scope="col">State</th>
               <th scope="col">Year of manufacture</th>
-              <th scope="col">Available</th>
               <th scope="col">Renter</th>
               <th scope="col">Time begin</th>
               <th scope="col"></th>
@@ -89,17 +152,18 @@
           <tbody>
             <template v-for="myVehicle of myVehicles">
               <tr :key="myVehicle.id">
-                <td scope="row">{{ myVehicle.id }}</td>
-                <td>{{ myVehicle.description.licensePlate }}</td>
-                <td>{{ myVehicle.description.model }}</td>
-                <td>{{ myVehicle.description.color }}</td>
-                <td>{{ myVehicle.description.state }}</td>
-                <td>{{ myVehicle.description.yearOfManufacture }}</td>
-                <td>{{ myVehicle.available }}</td>
+                <td scope="row">{{ myVehicle.vehicleId }}</td>
+                <td>{{ myVehicle.licensePlate }}</td>
+                <td>{{ myVehicle.model }}</td>
+                <td>{{ myVehicle.color }}</td>
+                <td>{{ myVehicle.state }}</td>
+                <td>{{ myVehicle.yearOfManufacture }}</td>
                 <td>{{ myVehicle.renterId }}</td>
                 <td>{{ myVehicle.timeBegin }}</td>
                 <td>
-                  <i class="far fa-times-circle" @click="removeVehicle"></i>
+                  <button class="btn btn-link">
+                    <i class="far fa-times-circle" @click="removeVehicle(myVehicle.vehicleId)"></i>
+                  </button>
                 </td>
               </tr>
             </template>
@@ -117,54 +181,109 @@
 import Axios from 'axios'
 import VueCookies from 'vue-cookies'
 import router from '../router.js'
+import toastr from 'toastr'
 
-function getAvailableVehicles() {
-  Axios.get('http://localhost:3000/api/queries/getAvailableVehicles').then((availableVehicles) => {
-    return availableVehicles
-  })
+toastr.options.toastClass = 'toastr'
+
+async function getAvailableVehicles() {
+  let url = ''
+  let response = await Axios.get(url)
+  return response.data
 }
 
-function getRentingVehicles(id) {
-  let url = 'http://localhost:3000/api/queries/getRentingVehicles?renterId=' + id
-  Axios.get(url).then((rentingVehicles) => {
-    return rentingVehicles
-  })
+async function getRenterVehicles(id) {
+  let url = '' + id
+  let response = await Axios.get(url)
+  return response.data
 }
 
-function getMyVehicles(id) {
-  let url = 'http://localhost:3000/api/queries/getMyVehicles?ownerId=' + id
-  Axios.get(url).then((myVehicles) => {
-    return myVehicles
-  })
+async function getOwnerVehicles(id) {
+  let url = '' + id
+  let response = await Axios.get(url)
+  return response.data
 }
 
 export default {
   name: 'dashboard',
   data: function() {
     return {
-      rentingVehicles: [],
+      renterRentingVehicles: [],
       availableVehicles: [],
-      myVehicles: [],
+      renterPendingVehicles: [],
+      renterPayingVehicles: [],
+      ownerAvailableVehicles: [],
+      ownerRentingVehicles: [],
+      ownerPendingVehicles: [],
+      ownerPayingVehicles: [],
       user: '',
       id: ''
     }
   },
   methods: {
+    fetchData: async function() {
+      if (this.user === 'lender') {
+        let _ownerAvailableVehicles = []
+        let _ownerRentingVehicles = []
+        let _ownerPendingVehicles = []
+        let _ownerPayingVehicles = []
+        let ownerVehicles = await getOwnerVehicles(this.id)
+        ownerVehicles.forEach(element => {
+          switch (element.vehicleStatus) {
+            case 'inUse':
+              _ownerRentingVehicles.push(element)
+              break
+            case 'available':
+              _ownerAvailableVehicles.push(element)
+              break
+            case 'pending':
+              _ownerPendingVehicles.push(element)
+              break
+            case 'onPayment':
+              _ownerPayingVehicles.push(element)
+              break
+          }
+        })
+        this.ownerPendingVehicles = _ownerPendingVehicles
+        this.ownerPayingVehicles = _ownerPayingVehicles
+        this.ownerAvailableVehicles = _ownerAvailableVehicles
+        this.ownerRentingVehicles = _ownerRentingVehicles
+      } else {
+        this.availableVehicles = await getAvailableVehicles()
+        let _renterRentingVehicles = []
+        let _renterPendingVehicles = []
+        let _renterPayingVehicles = []
+        let renterVehicles = await getRenterVehicles(this.id)
+        renterVehicles.forEach(element => {
+          switch (element.vehicleStatus) {
+            case 'inUse':
+              _renterRentingVehicles.push(element)
+              break
+            case 'pending':
+              _renterPendingVehicles.push(element)
+              break
+            case 'onPayment':
+              _renterPayingVehicles.push(element)
+              break
+          }
+        })
+        this.renterPendingVehicles = _renterPendingVehicles
+        this.renterPayingVehicles = _renterPayingVehicles
+        this.renterRentingVehicles = _renterRentingVehicles
+      }
+    },
     addNewVehicle: function() {
       router.push('/new-vehicle')
     },
-    removeVehicle: function() {}
+    removeVehicle: async function(id) {
+      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let response = await Axios.delete(url)
+      toastr
+    }
   },
   mounted: async function() {
     try {
       this.user = await VueCookies.get('account-type')
       this.id = await VueCookies.get('id')
-      if (this.user === 'lender') {
-        this.myVehicles = await getMyVehicles(this.id)
-      } else {
-        this.availableVehicles = await getAvailableVehicles()
-        this.rentingVehicles = await getRentingVehicles(this.id)
-      }
     } catch (err) {
       console.error(err)
     }

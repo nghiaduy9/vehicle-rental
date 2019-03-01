@@ -15,7 +15,14 @@
               >
             </div>
             <div class="form-group">
-              <input class="form-control" placeholder="Password" type="password">
+              <input class="form-control" placeholder="Password" type="password" v-model="password">
+            </div>
+            <div class="form-group">
+              <label>Account type:</label>
+              <select class="form-control" v-model="type">
+                <option value="renter">Renter</option>
+                <option value="lender">Lender</option>
+              </select>
             </div>
             <div class="form-group">
               <button type="submit" class="btn btn-primary btn-block">Sign in</button>
@@ -49,7 +56,7 @@
               >
             </div>
             <div class="form-group">
-              <input class="form-control" placeholder="Password" type="password">
+              <input class="form-control" placeholder="Password" type="password" v-model="password">
             </div>
             <div class="form-group">
               <input class="form-control" placeholder="Full name" type="text" v-model="name">
@@ -75,12 +82,9 @@
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import router from '../router.js'
+import toastr from 'toastr'
 
-function resetNoti(h) {
-  setTimeout(function() {
-    h.noti = ''
-  }, 1000)
-}
+toastr.options.toastClass = 'toastr'
 
 export default {
   name: 'Login',
@@ -102,93 +106,61 @@ export default {
       this.noti = ''
       this.identityNumber = ''
       this.password = ''
+      this.type = ''
     },
-    login: function() {
-      const h = this
-      axios
-        .get('http://localhost:3000/api/Renter/' + this.identityNumber)
-        .then(function(response) {
-          if (response.status === 200) {
-            VueCookies.set('account-type', 'renter')
-            VueCookies.set('id', h.identityNumber)
-            h.noti = 'Successful'
-            resetNoti(h)
-            document.getElementById('notice').classList.remove('text-danger')
-            document.getElementById('notice').classList.add('text-success')
-            router.push('/dashboard')
-          }
-        })
-        .catch(function(error) {
-          if (error) {
-            if (error.response.status === 404) {
-              axios
-                .get('http://localhost:3000/api/VehicleOwner/' + h.identityNumber)
-                .then(function(r) {
-                  if (r.status === 200) {
-                    VueCookies.set('account-type', 'lender')
-                    VueCookies.set('id', h.identityNumber)
-                    h.noti = 'Successful'
-                    resetNoti(h)
-                    document.getElementById('notice').classList.remove('text-danger')
-                    document.getElementById('notice').classList.add('text-success')
-                    router.push('/dashboard')
-                  }
-                })
-                .catch(function(e) {
-                  if (e) {
-                    if (e.response.status === 404) {
-                      h.noti = 'Unsuccessful'
-                      resetNoti(h)
-                      document.getElementById('notice').classList.remove('text-success')
-                      document.getElementById('notice').classList.add('text-danger')
-                    }
-                  }
-                })
-            }
-          }
-        })
-    },
-    signup: function() {
-      let h = this
+    login: async function() {
+      let url
       if (this.type === 'renter') {
-        axios
-          .post('http://localhost:3000/api/Renter', {
-            $class: 'org.vehiclerental.Renter',
-            RenterIdentityCardNumber: this.identityNumber,
-            name: this.name,
-            address: this.address,
-            phone: this.phone
-          })
-          .then(function() {
-            h.noti = 'Successful'
-            setTimeout(h.changeMode, 1000)
-          })
-          .catch(function(error) {
-            if (error) {
-              h.noti = 'Unsuccessful'
-              resetNoti(h)
-            }
-          })
+        url = 'http://localhost:3000/api/Renter/' + this.identityNumber
       } else if (this.type === 'lender') {
-        axios
-          .post('http://localhost:3000/api/VehicleOwner', {
-            $class: 'org.vehiclerental.VehicleOwner',
-            OwnerIdentityCardNumber: this.identityNumber,
-            name: this.name,
-            address: this.address,
-            phone: this.phone
-          })
-          .then(function() {
-            this.noti = 'Successful'
-            resetNoti(h)
-            setTimeout(this.changeMode, 1000)
-          })
-          .catch(function(error) {
-            if (error) {
-              h.noti = 'Unsuccessful'
-              resetNoti(h)
-            }
-          })
+        url = 'http://localhost:3000/api/VehicleOwner/' + this.identityNumber
+      }
+      let response = await axios.get(url)
+      if (response.data.password === this.password) {
+        VueCookies.set('account-type', this.type)
+        VueCookies.set('id', this.identityNumber)
+        router.push('/dashboard')
+      } else {
+        toastr.error('Please check your Identity Card Number or password')
+      }
+    },
+    signup: async function() {
+      if (!this.identityNumber || !this.name || !this.address || !this.phone || !this.type || !this.password) {
+        toastr.error('All fields are required')
+      } else if (this.type === 'renter') {
+        let newUser = {
+          $class: 'org.vehiclerental.Renter',
+          RenterIdentityCardNumber: this.identityNumber,
+          name: this.name,
+          address: this.address,
+          phone: this.phone,
+          accountType: this.type,
+          password: this.password
+        }
+        let response = await axios.post('http://localhost:3000/api/Renter', newUser)
+        if (response.status === 200) {
+          toastr.success('Success')
+          setTimeout(this.changeMode, 1000)
+        } else {
+          toastr.error('Identity Card Number was existsed')
+        }
+      } else if (this.type === 'lender') {
+        let newUser = {
+          $class: 'org.vehiclerental.VehicleOwner',
+          OwnerIdentityCardNumber: this.identityNumber,
+          name: this.name,
+          address: this.address,
+          phone: this.phone,
+          accountType: this.type,
+          password: this.password
+        }
+        let response = await axios.post('http://localhost:3000/api/VehicleOwner', newUser)
+        if (response.status === 200) {
+          toastr.success('Success')
+          setTimeout(this.changeMode, 1000)
+        } else {
+          toastr.error('Identity Card Number was existsed')
+        }
       }
     }
   }
