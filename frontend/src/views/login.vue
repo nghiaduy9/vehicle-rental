@@ -1,77 +1,22 @@
 <template>
   <div class="container w-25 mx-auto my-5">
-    <div v-if="loginMode">
-      <div class="card">
-        <h4 class="card-header text-center">Sign In</h4>
-        <div class="card-body">
-          <span class="text-success text-center" id="notice">{{ noti }}</span>
-          <form @submit.prevent="login">
-            <div class="form-group">
-              <input
-                class="form-control"
-                placeholder="Identity card number"
-                type="number"
-                v-model="identityNumber"
-              >
-            </div>
-            <div class="form-group">
-              <input class="form-control" placeholder="Password" type="password" v-model="password">
-            </div>
-            <div class="form-group">
-              <label>Account type:</label>
-              <select class="form-control" v-model="type">
-                <option value="renter">Renter</option>
-                <option value="lender">Lender</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-            </div>
-            <span class="btn-link" @click="changeMode">Not have account? Sign up now</span>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div v-else>
-      <div class="card">
-        <h4 class="card-header text-center">Sign Up</h4>
-        <div class="card-body">
-          <span class="text-success text-center">{{ noti }}</span>
-          <form @submit.prevent="signup">
-            <div class="form-group d-flex justify-content-between">
-              <span>Account type:</span>
-              <div>
-                <input type="radio" value="renter" checked v-model="type">
-                <label class="radio-inline ml-1 mr-2">Renter</label>
-                <input type="radio" value="lender" v-model="type">
-                <label class="radio-inline ml-1">Lender</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <input
-                class="form-control"
-                placeholder="Identity card number"
-                type="number"
-                v-model="identityNumber"
-              >
-            </div>
-            <div class="form-group">
-              <input class="form-control" placeholder="Password" type="password" v-model="password">
-            </div>
-            <div class="form-group">
-              <input class="form-control" placeholder="Full name" type="text" v-model="name">
-            </div>
-            <div class="form-group">
-              <input class="form-control" placeholder="Address" type="text" v-model="address">
-            </div>
-            <div class="form-group">
-              <input class="form-control" placeholder="Phone number" type="number" v-model="phone">
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block">Sign up</button>
-            </div>
-            <span class="btn-link" @click="changeMode">Have account? Sign in now</span>
-          </form>
+    <div class="card">
+      <div class="card-body">
+        <nav class="nav nav-tabs nav-justified mb-3">
+          <a class="nav-link active" data-toggle="tab" href="#sign-up">
+            <h5 class="mb-0">SIGN UP</h5>
+          </a>
+          <a class="nav-link" data-toggle="tab" href="#sign-in">
+            <h5 class="mb-0">SIGN IN</h5>
+          </a>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="sign-up">
+            <SignUpForm/>
+          </div>
+          <div class="tab-pane fade" id="sign-in">
+            <SignInForm/>
+          </div>
         </div>
       </div>
     </div>
@@ -79,96 +24,11 @@
 </template>
 
 <script>
-import axios from 'axios'
-import VueCookies from 'vue-cookies'
-import router from '../router.js'
-import toastr from 'toastr'
-
-toastr.options.toastClass = 'toastr'
+import SignInForm from '../components/sign-in-form'
+import SignUpForm from '../components/sign-up-form'
 
 export default {
   name: 'Login',
-  data: function() {
-    return {
-      noti: '',
-      loginMode: false,
-      type: '',
-      identityNumber: '',
-      password: '',
-      name: '',
-      address: '',
-      phone: ''
-    }
-  },
-  methods: {
-    changeMode: function() {
-      this.loginMode = !this.loginMode
-      this.noti = ''
-      this.identityNumber = ''
-      this.password = ''
-      this.type = ''
-    },
-    login: async function() {
-      let url
-      if (this.type === 'renter') {
-        url = 'http://localhost:3000/api/Renter/' + this.identityNumber
-      } else if (this.type === 'lender') {
-        url = 'http://localhost:3000/api/VehicleOwner/' + this.identityNumber
-      }
-      let response = await axios.get(url)
-      if (response.data.password === this.password) {
-        VueCookies.set('account-type', this.type)
-        VueCookies.set('id', this.identityNumber)
-        router.push('/dashboard')
-      } else {
-        toastr.error('Please check your Identity Card Number or password')
-      }
-    },
-    signup: async function() {
-      if (!this.identityNumber || !this.name || !this.address || !this.phone || !this.type || !this.password) {
-        toastr.error('All fields are required')
-      } else if (this.type === 'renter') {
-        let newUser = {
-          $class: 'org.vehiclerental.Renter',
-          RenterIdentityCardNumber: this.identityNumber,
-          name: this.name,
-          address: this.address,
-          phone: this.phone,
-          accountType: this.type,
-          password: this.password
-        }
-        let response = await axios.post('http://localhost:3000/api/Renter', newUser)
-        if (response.status === 200) {
-          toastr.success('Success')
-          setTimeout(this.changeMode, 1000)
-        } else {
-          toastr.error('Identity Card Number was existsed')
-        }
-      } else if (this.type === 'lender') {
-        let newUser = {
-          $class: 'org.vehiclerental.VehicleOwner',
-          OwnerIdentityCardNumber: this.identityNumber,
-          name: this.name,
-          address: this.address,
-          phone: this.phone,
-          accountType: this.type,
-          password: this.password
-        }
-        let response = await axios.post('http://localhost:3000/api/VehicleOwner', newUser)
-        if (response.status === 200) {
-          toastr.success('Success')
-          setTimeout(this.changeMode, 1000)
-        } else {
-          toastr.error('Identity Card Number was existsed')
-        }
-      }
-    }
-  }
+  components: { SignInForm, SignUpForm }
 }
 </script>
-
-<style scoped>
-.btn-link {
-  cursor: pointer;
-}
-</style>
