@@ -1,28 +1,28 @@
 <template>
-  <div class="card">
+  <div class="card my-3">
     <div class="card-header">
-      <h1>RENTING VEHICLES</h1>
+      <h5 class="mb-0">RENTING VEHICLES</h5>
     </div>
     <div class="card-body">
-      <template v-for="renterRentingVehicle of renterRentingVehicles">
-        <div :key="renterRentingVehicle.vehicleId">
-          <h4 class="card-title">ID: {{ renterRentingVehicle.vehicleId }}</h4>
+      <template v-for="vehicle of rentingVehicles">
+        <div :key="vehicle.vehicleId">
+          <h4 class="card-title">ID: {{ vehicle.vehicleId }}</h4>
           <ul>
-            <li>Vehicle ID: {{ renterRentingVehicle.vehicleId }}</li>
-            <li>License plate: {{ renterRentingVehicle.licensePlate }}</li>
-            <li>Identity card number:  {{ renterRentingVehicle.identityCardNumber }}</li>
-            <li>Model: {{ renterRentingVehicle.model }}</li>
-            <li>Color: {{ renterRentingVehicle.color }}</li>
-            <li>State: {{ renterRentingVehicle.state }}</li>
-            <li>Year of manufacture: {{ renterRentingVehicle.yearOfManufacture }}</li>
-            <li>Skeleton number: {{ renterRentingVehicle.skeletonNumber }}</li>
-            <li>Engine number: {{ renterRentingVehicle.engineNumber }}</li>
-            <li>Price per day: {{ renterRentingVehicle.pricePerDay }}</li>
-            <li>Renter identity card number: {{ renterRentingVehicle.renter.RenterIdentityCardNumber }}</li>
-            <li>Renter name: {{ renterRentingVehicle.renter.name }}</li>
-            <li>Renter phone: {{ renterRentingVehicle.renter.phone }}</li>
-            <li>Renter address: {{ renterRentingVehicle.renter.address }}</li>
-            <li>Begin: {{ renterRentingVehicle.timeBegin }}</li>
+            <li>Vehicle ID: {{ vehicle.vehicleId }}</li>
+            <li>License plate: {{ vehicle.licensePlate }}</li>
+            <li>Identity card number: {{ vehicle.identityCardNumber }}</li>
+            <li>Model: {{ vehicle.model }}</li>
+            <li>Color: {{ vehicle.color }}</li>
+            <li>State: {{ vehicle.state }}</li>
+            <li>Year of manufacture: {{ vehicle.yearOfManufacture }}</li>
+            <li>Skeleton number: {{ vehicle.skeletonNumber }}</li>
+            <li>Engine number: {{ vehicle.engineNumber }}</li>
+            <li>Price per day: {{ vehicle.pricePerDay }}</li>
+            <li>Renter identity card number: {{ vehicle.renter.RenterIdentityCardNumber }}</li>
+            <li>Renter name: {{ vehicle.renter.name }}</li>
+            <li>Renter phone: {{ vehicle.renter.phone }}</li>
+            <li>Renter address: {{ vehicle.renter.address }}</li>
+            <li>Begin: {{ vehicle.timeBegin }}</li>
           </ul>
         </div>
       </template>
@@ -37,8 +37,7 @@ import toastr from 'toastr'
 export default {
   name: 'lender-renting-vehicle',
   props: {
-    renterRentingVehicles: []
-  },
+    rentingVehicles: []
+  }
 }
 </script>
-

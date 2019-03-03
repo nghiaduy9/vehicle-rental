@@ -6,7 +6,7 @@
     "composer": "^0.20.7"
   },
   "scripts": {
-    "build": "composer archive create -t dir -n .",
+    "build": "composer archive create -t dir -n . -a vehicle-rental.bna",
     "lint": "eslint .",
     "start": "composer-rest-server -c admin@vehicle-rental -n never -u true -w true"
   },

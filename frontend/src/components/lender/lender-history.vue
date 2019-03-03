@@ -1,30 +1,30 @@
 <template>
-  <div class="card">
+  <div class="card my-3">
     <div class="card-header">
-      <h1>HISTORY</h1>
+      <h5 class="mb-0">HISTORY</h5>
     </div>
     <div class="card-body">
-      <template v-for="rentalAgreement of rentalAgreements">
-        <div :key="rentalAgreement.rentalId">
-          <h4 class="card-title">ID: {{ rentalAgreement.rentalId }}</h4>
+      <template v-for="agreement of rentalAgreements">
+        <div :key="agreement.rentalId">
+          <h4 class="card-title">ID: {{ agreement.rentalId }}</h4>
           <ul>
-            <li>Vehicle ID: {{ rentalAgreement.vehicle.vehicleId }}</li>
-            <li>License plate: {{ rentalAgreement.vehicle.licensePlate }}</li>
-            <li>Identity card number:  {{ rentalAgreement.vehicle.identityCardNumber }}</li>
-            <li>Model: {{ rentalAgreement.vehicle.model }}</li>
-            <li>Color: {{ rentalAgreement.vehicle.color }}</li>
-            <li>State: {{ rentalAgreement.vehicle.state }}</li>
-            <li>Year of manufacture: {{ rentalAgreement.vehicle.yearOfManufacture }}</li>
-            <li>Skeleton number: {{ rentalAgreement.vehicle.skeletonNumber }}</li>
-            <li>Engine number: {{ rentalAgreement.vehicle.engineNumber }}</li>
-            <li>Price per day: {{ rentalAgreement.vehicle.pricePerDay }}</li>
-            <li>Renter identity card number: {{ rentalAgreement.vehicle.renter.RenterIdentityCardNumber }}</li>
-            <li>Renter name: {{ rentalAgreement.vehicle.renter.name }}</li>
-            <li>Renter phone: {{ rentalAgreement.vehicle.renter.phone }}</li>
-            <li>Renter address: {{ rentalAgreement.vehicle.renter.address }}</li>
-            <li>Begin: {{ rentalAgreement.timeBegin }}</li>
-            <li>End: {{ rentalAgreement.timeEnd }}</li>
-            <li>Total price: {{ rentalAgreement.totalPrice }}</li>
+            <li>Vehicle ID: {{ agreement.vehicle.vehicleId }}</li>
+            <li>License plate: {{ agreement.vehicle.licensePlate }}</li>
+            <li>Identity card number: {{ agreement.vehicle.identityCardNumber }}</li>
+            <li>Model: {{ agreement.vehicle.model }}</li>
+            <li>Color: {{ agreement.vehicle.color }}</li>
+            <li>State: {{ agreement.vehicle.state }}</li>
+            <li>Year of manufacture: {{ agreement.vehicle.yearOfManufacture }}</li>
+            <li>Skeleton number: {{ agreement.vehicle.skeletonNumber }}</li>
+            <li>Engine number: {{ agreement.vehicle.engineNumber }}</li>
+            <li>Price per day: {{ agreement.vehicle.pricePerDay }}</li>
+            <li>Renter identity card number: {{ agreement.vehicle.renter.RenterIdentityCardNumber }}</li>
+            <li>Renter name: {{ agreement.vehicle.renter.name }}</li>
+            <li>Renter phone: {{ agreement.vehicle.renter.phone }}</li>
+            <li>Renter address: {{ agreement.vehicle.renter.address }}</li>
+            <li>Begin: {{ agreement.timeBegin }}</li>
+            <li>End: {{ agreement.timeEnd }}</li>
+            <li>Total price: {{ agreement.totalPrice }}</li>
           </ul>
         </div>
       </template>

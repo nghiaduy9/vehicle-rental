@@ -1,147 +1,57 @@
 <template>
-  <div id="dashboard" class="container">
+  <div id="dashboard" class="container my-5">
     <h1>DASHBOARD</h1>
-    <div class="card" v-if="user === 'renter'">    
+    <div v-if="user === 'renter'">
+      <RenterAvailableVehicle/>
+      <RenterPendingVehicle/>
+      <RenterPayingVehicle/>
+      <RenterRentingVehicle/>
+      <RenterHistory/>
     </div>
-    <hr>
-    <div class="card" v-if="user === 'lender'">
+    <div v-else>
+      <LenderAvailableVehicle/>
+      <LenderPendingVehicle/>
+      <LenderPayingVehicle/>
+      <LenderRentingVehicle/>
+      <LenderHistory/>
     </div>
   </div>
 </template>
 
 <script>
-import Axios from 'axios'
-import VueCookies from 'vue-cookies'
-import router from '../router.js'
-import toastr from 'toastr'
-
-toastr.options.toastClass = 'toastr'
-
-async function getAvailableVehicles() {
-  let url = 'http://localhost:3000/api/queries/getAvailableVehicles'
-  let response = await Axios.get(url)
-  return response.data
-}
-
-async function getRenterVehicles(id) {
-  let url = 'http://localhost:3000/api/queries/getRenterVehicles?renterId=' + id
-  let response = await Axios.get(url)
-  return response.data
-}
-
-async function getOwnerVehicles(id) {
-  let url = 'http://localhost:3000/api/queries/getOwnerVehicles?ownerId=' + id
-  let response = await Axios.get(url)
-  return response.data
-}
-
-async function getOwnerRental(id) {
-  let url = 'http://localhost:3000/api/queries/getLenderRental?ownerId=' + id
-  let response = await Axios.get(url)
-  return response.data
-}
-
-async function getRenterRental(id) {
-  let url = 'http://localhost:3000/api/queries/getRenterRental?renterId=' + id
-  let response = await Axios.get(url)
-  return response.data
-}
+import vuecookies from 'vue-cookies'
+import LenderAvailableVehicle from '../components/lender/lender-available-vehicle'
+import LenderHistory from '../components/lender/lender-history'
+import LenderPayingVehicle from '../components/lender/lender-paying-vehicle'
+import LenderPendingVehicle from '../components/lender/lender-pending-vehicle'
+import LenderRentingVehicle from '../components/lender/lender-renting-vehicle'
+import RenterAvailableVehicle from '../components/renter/renter-available-vehicle'
+import RenterHistory from '../components/renter/renter-history'
+import RenterPayingVehicle from '../components/renter/renter-paying-vehicle'
+import RenterPendingVehicle from '../components/renter/renter-pending-vehicle'
+import RenterRentingVehicle from '../components/renter/renter-renting-vehicle'
 
 export default {
   name: 'dashboard',
-  data: function() {
-    return {
-      renterRentingVehicles: [],
-      availableVehicles: [],
-      renterPendingVehicles: [],
-      renterPayingVehicles: [],
-      ownerAvailableVehicles: [],
-      ownerRentingVehicles: [],
-      ownerPendingVehicles: [],
-      ownerPayingVehicles: [],
-      ownerHistory: [],
-      renterHistory: [],
-      ownerPayingRental: [],
-      renterPayingRental: [],
-      user: '',
-      id: ''
-    }
+  components: {
+    LenderAvailableVehicle,
+    LenderHistory,
+    LenderPayingVehicle,
+    LenderPendingVehicle,
+    LenderRentingVehicle,
+    RenterAvailableVehicle,
+    RenterHistory,
+    RenterPayingVehicle,
+    RenterPendingVehicle,
+    RenterRentingVehicle
   },
-  methods: {
-    fetchData: async function() {
-      if (this.user === 'lender') {
-        let _ownerAvailableVehicles = []
-        let _ownerRentingVehicles = []
-        let _ownerPendingVehicles = []
-        let _ownerPayingVehicles = []
-        let ownerVehicles = await getOwnerVehicles(this.id)
-        ownerVehicles.forEach(element => {
-          switch (element.vehicleStatus) {
-            case 'inUse':
-              _ownerRentingVehicles.push(element)
-              break
-            case 'available':
-              _ownerAvailableVehicles.push(element)
-              break
-            case 'pending':
-              _ownerPendingVehicles.push(element)
-              break
-            case 'onPayment':
-              _ownerPayingVehicles.push(element)
-              break
-          }
-        })
-        this.ownerPendingVehicles = _ownerPendingVehicles
-        this.ownerPayingVehicles = _ownerPayingVehicles
-        this.ownerAvailableVehicles = _ownerAvailableVehicles
-        this.ownerRentingVehicles = _ownerRentingVehicles
-        let renterRental = await getRenterRental(this.id)
-        let _renterPayingRental = []
-        let _renterHistory = []
-        renterRental.forEach(element => {
-          if (element.paid) _renterHistory.push(element)
-          else _renterPayingRental.push(element)
-        })
-        this.renterHistory = _renterHistory
-        this.renterPayingRental = _renterPayingRental
-      } else {
-        this.availableVehicles = await getAvailableVehicles()
-        let _renterRentingVehicles = []
-        let _renterPendingVehicles = []
-        let _renterPayingVehicles = []
-        let renterVehicles = await getRenterVehicles(this.id)
-        renterVehicles.forEach(element => {
-          switch (element.vehicleStatus) {
-            case 'inUse':
-              _renterRentingVehicles.push(element)
-              break
-            case 'pending':
-              _renterPendingVehicles.push(element)
-              break
-            case 'onPayment':
-              _renterPayingVehicles.push(element)
-              break
-          }
-        })
-        this.renterPendingVehicles = _renterPendingVehicles
-        this.renterPayingVehicles = _renterPayingVehicles
-        this.renterRentingVehicles = _renterRentingVehicles
-        let ownerRental = await getOwnerRental(this.id)
-        let _ownerPayingRental = []
-        let _ownerHistory = []
-        ownerRental.forEach(element => {
-          if (element.paid) _ownerHistory.push(element)
-          else _ownerPayingRental.push(element)
-        })
-        this.ownerHistory = _ownerHistory
-        this.ownerPayingRental = _ownerPayingRental
-      }
-    },
+  data: function() {
+    return { user: '', id: '' }
   },
   mounted: async function() {
     try {
-      this.user = await VueCookies.get('account-type')
-      this.id = await VueCookies.get('id')
+      this.user = await vuecookies.get('account-type')
+      this.id = await vuecookies.get('id')
     } catch (err) {
       console.error(err)
     }
