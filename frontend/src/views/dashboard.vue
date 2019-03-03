@@ -186,19 +186,31 @@ import toastr from 'toastr'
 toastr.options.toastClass = 'toastr'
 
 async function getAvailableVehicles() {
-  let url = ''
+  let url = 'http://localhost:3000/api/queries/getAvailableVehicles'
   let response = await Axios.get(url)
   return response.data
 }
 
 async function getRenterVehicles(id) {
-  let url = '' + id
+  let url = 'http://localhost:3000/api/queries/getRenterVehicles?renterId=' + id
   let response = await Axios.get(url)
   return response.data
 }
 
 async function getOwnerVehicles(id) {
-  let url = '' + id
+  let url = 'http://localhost:3000/api/queries/getOwnerVehicles?ownerId=' + id
+  let response = await Axios.get(url)
+  return response.data
+}
+
+async function getOwnerRental(id) {
+  let url = 'http://localhost:3000/api/queries/getLenderRental?ownerId=' + id
+  let response = await Axios.get(url)
+  return response.data
+}
+
+async function getRenterRental(id) {
+  let url = 'http://localhost:3000/api/queries/getRenterRental?renterId=' + id
   let response = await Axios.get(url)
   return response.data
 }
@@ -215,6 +227,10 @@ export default {
       ownerRentingVehicles: [],
       ownerPendingVehicles: [],
       ownerPayingVehicles: [],
+      ownerHistory: [],
+      renterHistory: [],
+      ownerPayingRental: [],
+      renterPayingRental: [],
       user: '',
       id: ''
     }
@@ -247,6 +263,15 @@ export default {
         this.ownerPayingVehicles = _ownerPayingVehicles
         this.ownerAvailableVehicles = _ownerAvailableVehicles
         this.ownerRentingVehicles = _ownerRentingVehicles
+        let renterRental = await getRenterRental(this.id)
+        let _renterPayingRental = []
+        let _renterHistory = []
+        renterRental.forEach(element => {
+          if (element.paid) _renterHistory.push(element)
+          else _renterPayingRental.push(element)
+        })
+        this.renterHistory = _renterHistory
+        this.renterPayingRental = _renterPayingRental
       } else {
         this.availableVehicles = await getAvailableVehicles()
         let _renterRentingVehicles = []
@@ -269,16 +294,17 @@ export default {
         this.renterPendingVehicles = _renterPendingVehicles
         this.renterPayingVehicles = _renterPayingVehicles
         this.renterRentingVehicles = _renterRentingVehicles
+        let ownerRental = await getOwnerRental(this.id)
+        let _ownerPayingRental = []
+        let _ownerHistory = []
+        ownerRental.forEach(element => {
+          if (element.paid) _ownerHistory.push(element)
+          else _ownerPayingRental.push(element)
+        })
+        this.ownerHistory = _ownerHistory
+        this.ownerPayingRental = _ownerPayingRental
       }
     },
-    addNewVehicle: function() {
-      router.push('/new-vehicle')
-    },
-    removeVehicle: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
-      let response = await Axios.delete(url)
-      toastr
-    }
   },
   mounted: async function() {
     try {

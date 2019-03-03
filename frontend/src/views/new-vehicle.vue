@@ -1,7 +1,6 @@
 <template>
   <div class="container w-50" v-if="cookieCheck">
     <h4>Upload your vehicle and join our system</h4>
-    <p class="text-center">{{noti}}</p>
     <form @submit.prevent="newVehicle">
       <div class="form-group">
         <input
@@ -22,6 +21,9 @@
       </div>
       <div class="form-group">
         <input class="form-control" placeholder="State" type="text" v-model="state">
+      </div>
+      <div class="form-group">
+        <input class="form-control" placeholder="Price per day" type="number" v-model="pricePerDay">
       </div>
       <div class="form-group">
         <input
@@ -51,12 +53,14 @@
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import router from '../router.js'
+import toastr from 'toastr'
+
+toastr.options.toastClass = 'toastr'
 
 export default {
   name: 'NewVehicle',
   data: function() {
     return {
-      noti: '',
       cookieCheck: '',
       ownerId: '',
       vehicleId: '',
@@ -66,7 +70,8 @@ export default {
       state: '',
       yearOfManufacture: '',
       skeletonNumber: '',
-      engineNumber: ''
+      engineNumber: '',
+      pricePerDay: ''
     }
   },
   mounted: function() {
@@ -76,14 +81,16 @@ export default {
     if (t === 'lender') this.cookieCheck = true
   },
   methods: {
-    newVehicle: function() {
+    newVehicle: async function() {
       let h = this
+      let url = 'http://localhost:3000/api/VehicleOwner/' + this.ownerId
+      let owner = await axios.get(url)
       axios
         .post('http://localhost:3000/api/Vehicle/', {
           $class: 'org.vehiclerental.Vehicle',
           vehicleId: this.vehicleId,
           licensePlate: this.licensePlate,
-          ownerId: this.ownerId,
+          lender: owner,
           identityCardNumber: this.ownerId,
           model: this.model,
           color: this.colour,
@@ -91,26 +98,22 @@ export default {
           yearOfManufacture: this.yearOfManufacture,
           skeletonNumber: this.skeletonNumber,
           engineNumber: this.engineNumber,
-          available: true,
-          renterId: 'undefined',
-          timeBegin: '1970-01-01'
+          vehicleStatus: 'available',
+          renter: 'undefined',
+          pricePerDay: this.pricePerDay,
+          timeBegin: '1970-01-01T00:00:00.000Z'
         })
         .then(function(response) {
           if (response.status === 200) {
-            h.noti = 'Successful'
-          } else h.noti = 'Unsuccessful'
+            toastr.success('Successful')
+          } else toastr.error('Unsuccessful')
           setTimeout(function() {
-            h.noti = ''
             router.push('/dashboard')
-          }, 500)
+          }, 3000)
         })
         .catch(function(e) {
-          if (e) {
-            h.noti = 'Unsuccessful'
-          }
-          setTimeout(function() {
-            h.noti = ''
-          })
+          console.error(e)
+          toastr.error('Unsuccessful')      
         })
     }
   }

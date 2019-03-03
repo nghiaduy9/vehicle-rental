@@ -57,6 +57,7 @@ asset RentalAgreement identified by rentalId{
   o DateTime timeEnd
   o Double totalPrice
   o String currency default = 'USD'
+  o Boolean paid default = false
 }
 
 transaction Rental {

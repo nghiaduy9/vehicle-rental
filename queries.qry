@@ -19,14 +19,14 @@ query getOwnerVehicles {
           WHERE (lender.OwnerIdentityCardNumber == _$ownerId)
 }
 
-query getLendHistory {
+query getLenderRental {
   description: "Select all history of a lender"
   statement:
       SELECT org.vehiclerental.RentalAgreement
           WHERE (lender.OwnerIdentityCardNumber == _$ownerId)
 }
 
-query getRentHistory {
+query getRenterRental {
   description: "Select all history of a renter"
   statement:
       SELECT org.vehiclerental.RentalAgreement

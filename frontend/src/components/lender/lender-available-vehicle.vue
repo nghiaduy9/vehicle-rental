@@ -8,16 +8,16 @@
         <div :key="ownerAvailableVehicle.vehicleId">
           <h4 class="card-title">ID: {{ ownerAvailableVehicle.vehicleId }}</h4>
           <ul>
-            <li>{{ ownerAvailableVehicle.vehicleId }}</li>
-            <li>{{ ownerAvailableVehicle.licensePlate }}</li>
-            <li>{{ ownerAvailableVehicle.identityCardNumber }}</li>
-            <li>{{ ownerAvailableVehicle.model }}</li>
-            <li>{{ ownerAvailableVehicle.color }}</li>
-            <li>{{ ownerAvailableVehicle.state }}</li>
-            <li>{{ ownerAvailableVehicle.yearOfManufacture }}</li>
-            <li>{{ ownerAvailableVehicle.skeletonNumber }}</li>
-            <li>{{ ownerAvailableVehicle.engineNumber }}</li>
-            <li>{{ ownerAvailableVehicle.pricePerDay }}</li>
+            <li>Vehicle ID: {{ ownerAvailableVehicle.vehicleId }}</li>
+            <li>License plate: {{ ownerAvailableVehicle.licensePlate }}</li>
+            <li>Identity card number:  {{ ownerAvailableVehicle.identityCardNumber }}</li>
+            <li>Model: {{ ownerAvailableVehicle.model }}</li>
+            <li>Color: {{ ownerAvailableVehicle.color }}</li>
+            <li>State: {{ ownerAvailableVehicle.state }}</li>
+            <li>Year of manufacture: {{ ownerAvailableVehicle.yearOfManufacture }}</li>
+            <li>Skeleton number: {{ ownerAvailableVehicle.skeletonNumber }}</li>
+            <li>Engine number: {{ ownerAvailableVehicle.engineNumber }}</li>
+            <li>Price per day: {{ ownerAvailableVehicle.pricePerDay }}</li>
           </ul>
           <button type="button" class="btn btn-danger" @click="removeVehicle(ownerAvailableVehicle.vehicleId)">Remove</button>
         </div>
@@ -36,7 +36,7 @@ import toastr from 'toastr'
 toastr.options.toastClass = 'toastr'
 
 export default {
-  name: 'available-vehicle',
+  name: 'lender-available-vehicle',
   props: {
     ownerAvailableVehicles: []
   },

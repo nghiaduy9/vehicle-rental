@@ -43,6 +43,9 @@
 <script>
 import axios from 'axios'
 import toastr from 'toastr'
+import bcrypt from 'bcrypt'
+
+const saltRounds = 10
 toastr.options.toastClass = 'toastr'
 
 export default {
@@ -54,11 +57,13 @@ export default {
       password: '',
       name: '',
       address: '',
-      phone: ''
+      phone: '',
+      hash: ''
     }
   },
   methods: {
     signup: async function() {
+      this.hash = bcrypt.hashSync(password, saltRounds)
       if (this.accountType === 'renter') {
         const newUser = {
           $class: 'org.vehiclerental.Renter',
@@ -67,7 +72,7 @@ export default {
           address: this.address,
           phone: this.phone,
           accountType: this.accountType,
-          password: this.password
+          password: this.hash
         }
         const res = await axios.post('http://localhost:3000/api/Renter', newUser)
         if (res.status === 200) toastr.success('Success')
