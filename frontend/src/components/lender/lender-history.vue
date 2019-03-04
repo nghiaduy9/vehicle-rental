@@ -4,7 +4,7 @@
       <h5 class="mb-0">HISTORY</h5>
     </div>
     <div class="card-body">
-      <template v-for="agreement of rentalAgreements">
+      <template v-for="agreement of lenderAgreements">
         <div :key="agreement.rentalId">
           <h4 class="card-title">ID: {{ agreement.rentalId }}</h4>
           <ul>
@@ -18,14 +18,15 @@
             <li>Skeleton number: {{ agreement.vehicle.skeletonNumber }}</li>
             <li>Engine number: {{ agreement.vehicle.engineNumber }}</li>
             <li>Price per day: {{ agreement.vehicle.pricePerDay }}</li>
-            <li>Renter identity card number: {{ agreement.vehicle.renter.RenterIdentityCardNumber }}</li>
-            <li>Renter name: {{ agreement.vehicle.renter.name }}</li>
-            <li>Renter phone: {{ agreement.vehicle.renter.phone }}</li>
-            <li>Renter address: {{ agreement.vehicle.renter.address }}</li>
+            <li>Renter identity card number: {{ agreement.renter.RenterIdentityCardNumber }}</li>
+            <li>Renter name: {{ agreement.renter.name }}</li>
+            <li>Renter phone: {{ agreement.renter.phone }}</li>
+            <li>Renter address: {{ agreement.renter.address }}</li>
             <li>Begin: {{ agreement.timeBegin }}</li>
             <li>End: {{ agreement.timeEnd }}</li>
             <li>Total price: {{ agreement.totalPrice }}</li>
           </ul>
+          <hr>
         </div>
       </template>
     </div>
@@ -33,10 +34,31 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
+import Axios from 'axios'
+
 export default {
   name: 'lender-history',
-  props: {
-    rentalAgreements: []
+  data: function() {
+    return {
+      id: '',
+      lenderAgreements: [],
+    }
+  },
+  methods: {
+    fetchLA: async function(id) {
+      let url = 'http://localhost:3000/api/queries/getOwnerHistory?ownerId=' + id
+      let res = await Axios.get(url)
+      this.lenderAgreements = res.data
+    }
+  },
+  mounted: async function() {
+    try {
+      this.id = VueCookies.get('id')
+      setTimeout(await this.fetchLA(this.id), 3000);
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
 </script>

@@ -5,30 +5,67 @@ query getAvailableVehicles {
           WHERE (vehicleStatus == 'available')
 }
 
-query getRenterVehicles {
-  description: "Select all vehicles that user is renting"
+query getRenterRentingVehicles {
+  description: "get renter renting vehicle"
   statement:
       SELECT org.vehiclerental.Vehicle
-          WHERE (renter.RenterIdentityCardNumber == _$renterId)
+          WHERE (renter.RenterIdentityCardNumber == _$renterId AND vehicleStatus == 'inUse')
 }
 
-query getOwnerVehicles {
-  description: "Select all my vehicle on network"
+query getRenterPendingVehicles {
+  description: "get renter pending vehicle"
   statement:
       SELECT org.vehiclerental.Vehicle
-          WHERE (lender.OwnerIdentityCardNumber == _$ownerId)
+          WHERE (renter.RenterIdentityCardNumber == _$renterId AND vehicleStatus == 'pending')
 }
 
-query getLenderRental {
-  description: "Select all history of a lender"
+query getRenterPayingRental {
+  description: "get renter paying rental"
   statement:
       SELECT org.vehiclerental.RentalAgreement
-          WHERE (lender.OwnerIdentityCardNumber == _$ownerId)
+          WHERE (renter.RenterIdentityCardNumber == _$renterId AND paid == false)
 }
 
-query getRenterRental {
+query getRenterHistory {
   description: "Select all history of a renter"
   statement:
       SELECT org.vehiclerental.RentalAgreement
-          WHERE (renter.RenterIdentityCardNumber == _$renterId)
+          WHERE (renter.RenterIdentityCardNumber == _$renterId AND paid == true)
 }
+
+query getOwnerAvailableVehicles {
+  description: "Select all owner available vehicle on network"
+  statement:
+      SELECT org.vehiclerental.Vehicle
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId AND vehicleStatus == 'available')
+}
+
+query getOwnerRentingVehicles {
+  description: "Select all owner renting vehicle on network"
+  statement:
+      SELECT org.vehiclerental.Vehicle
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId AND vehicleStatus == 'inUse')
+}
+
+query getOwnerPendingVehicles {
+  description: "Select all owner pending vehicle on network"
+  statement:
+      SELECT org.vehiclerental.Vehicle
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId AND vehicleStatus == 'pending')
+}
+
+query getOwnerPayingRental {
+  description: "get owner paying rental"
+  statement:
+      SELECT org.vehiclerental.RentalAgreement
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId AND paid == false)
+}
+
+query getOwnerHistory {
+  description: "get owner paying rental"
+  statement:
+      SELECT org.vehiclerental.RentalAgreement
+          WHERE (lender.OwnerIdentityCardNumber == _$ownerId AND paid == true)
+}
+
+

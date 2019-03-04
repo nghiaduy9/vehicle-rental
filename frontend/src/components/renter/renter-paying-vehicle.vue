@@ -4,7 +4,7 @@
       <h5 class="mb-0">PAYING VEHICLES</h5>
     </div>
     <div class="card-body">
-      <template v-for="agreement of rentalAgreements">
+      <template v-for="agreement of renterPayingAgreements">
         <div :key="agreement.rentalId">
           <h4 class="card-title">ID: {{ agreement.rentalId }}</h4>
           <ul>
@@ -18,10 +18,10 @@
             <li>Skeleton number: {{ agreement.vehicle.skeletonNumber }}</li>
             <li>Engine number: {{ agreement.vehicle.engineNumber }}</li>
             <li>Price per day: {{ agreement.vehicle.pricePerDay }}</li>
-            <li>Owner identity card number: {{ agreement.vehicle.lender.OwnerIdentityCardNumber }}</li>
-            <li>Owner name: {{ agreement.vehicle.lender.name }}</li>
-            <li>Owner phone: {{ agreement.vehicle.lender.phone }}</li>
-            <li>Owner address: {{ agreement.vehicle.lender.address }}</li>
+            <li>Owner identity card number: {{ agreement.lender.OwnerIdentityCardNumber }}</li>
+            <li>Owner name: {{ agreement.lender.name }}</li>
+            <li>Owner phone: {{ agreement.lender.phone }}</li>
+            <li>Owner address: {{ agreement.lender.address }}</li>
             <li>Begin: {{ agreement.timeBegin }}</li>
             <li>End: {{ agreement.timeEnd }}</li>
             <li>Total price: {{ agreement.totalPrice }}</li>
@@ -33,10 +33,31 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
+import Axios from 'axios'
+
 export default {
-  name: 'render-paying-vehicle',
-  props: {
-    rentalAgreements: []
+  name: 'renter-paying-vehicle',
+  data: function() {
+    return {
+      id: '',
+      renterPayingAgreements: []
+    }
+  },
+  methods: {
+    fetchRPA: async function(id) {
+      let url = 'http://localhost:3000/api/queries/getRenterPayingRental?renterId=' + id
+      let res = await Axios.get(url)
+      this.renterPayingAgreements = res.data
+    }
+  },
+  mounted: async function() {
+    try {
+      this.id = VueCookies.get('id')
+      setTimeout(await this.fetchRPA(this.id), 3000);
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
 </script>

@@ -3,14 +3,6 @@
     <h4>Upload your vehicle and join our system</h4>
     <form @submit.prevent="newVehicle">
       <div class="form-group">
-        <input
-          class="form-control"
-          placeholder="Vehicle Id you want"
-          type="text"
-          v-model="vehicleId"
-        >
-      </div>
-      <div class="form-group">
         <input class="form-control" placeholder="License plate" type="text" v-model="licensePlate">
       </div>
       <div class="form-group">
@@ -57,6 +49,23 @@ import toastr from 'toastr'
 
 toastr.options.toastClass = 'toastr'
 
+function IDGenerator() {
+	this.length = 8
+	this.timestamp = +new Date	 
+	var _getRandomInt = function( min, max ) {
+		return Math.floor( Math.random() * ( max - min + 1 ) ) + min
+	}	 
+	this.generate = function() {
+		var ts = this.timestamp.toString()
+		var parts = ts.split( "" ).reverse()
+		var id = ""	 
+		for( var i = 0; i < this.length; ++i ) {
+			var index = _getRandomInt( 0, parts.length - 1 )
+		  id += parts[index]
+		}	 
+	  return id
+  }
+}
 export default {
   name: 'NewVehicle',
   data: function() {
@@ -82,39 +91,47 @@ export default {
   },
   methods: {
     newVehicle: async function() {
-      let h = this
       let url = 'http://localhost:3000/api/VehicleOwner/' + this.ownerId
-      let owner = await axios.get(url)
-      axios
-        .post('http://localhost:3000/api/Vehicle/', {
-          $class: 'org.vehiclerental.Vehicle',
-          vehicleId: this.vehicleId,
-          licensePlate: this.licensePlate,
-          lender: owner,
-          identityCardNumber: this.ownerId,
-          model: this.model,
-          color: this.colour,
-          state: this.state,
-          yearOfManufacture: this.yearOfManufacture,
-          skeletonNumber: this.skeletonNumber,
-          engineNumber: this.engineNumber,
-          vehicleStatus: 'available',
-          renter: 'undefined',
-          pricePerDay: this.pricePerDay,
-          timeBegin: '1970-01-01T00:00:00.000Z'
-        })
-        .then(function(response) {
-          if (response.status === 200) {
-            toastr.success('Successful')
-          } else toastr.error('Unsuccessful')
-          setTimeout(function() {
-            router.push('/dashboard')
-          }, 3000)
-        })
-        .catch(function(e) {
-          console.error(e)
-          toastr.error('Unsuccessful')      
-        })
+      let res = await axios.get(url)
+      let owner = {
+        $class: 'org.vehiclerental.OwnerConcept',
+        OwnerIdentityCardNumber: res.data.OwnerIdentityCardNumber,
+        name: res.data.name,
+        address: res.data.address,
+        phone: res.data.phone
+      }
+      let renter = {
+        $class: 'org.vehiclerental.RenterConcept',
+        RenterIdentityCardNumber: "",
+        name: "",
+        address: "",
+        phone: ""
+      }
+      const generator = new IDGenerator()
+      this.vehicleId = generator.generate()
+      let response = await axios.post('http://localhost:3000/api/Vehicle/', {
+        $class: 'org.vehiclerental.Vehicle',
+        vehicleId: this.vehicleId,
+        licensePlate: this.licensePlate,
+        lender: owner,
+        identityCardNumber: this.ownerId,
+        model: this.model,
+        color: this.colour,
+        state: this.state,
+        yearOfManufacture: this.yearOfManufacture,
+        skeletonNumber: this.skeletonNumber,
+        engineNumber: this.engineNumber,
+        vehicleStatus: 'available',
+        renter: renter,
+        pricePerDay: this.pricePerDay,
+        timeBegin: '1970-01-01T00:00:00.000Z'
+      })
+      if (response.status === 200) {
+        toastr.success('Successful')
+        setTimeout(function() {
+          router.push('/dashboard')
+        }, 3000)
+      } else toastr.error('Unsuccessful')
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "vehicle-rental",
   "description": "Vehicle rental",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "engines": {
     "composer": "^0.20.7"
   },
@@ -26,5 +26,6 @@
     "composer-cucumber-steps": "^0.20.7",
     "composer-rest-server": "^0.20.7",
     "eslint": "^5.14.1"
-  }
+  },
+  "dependencies": {}
 }

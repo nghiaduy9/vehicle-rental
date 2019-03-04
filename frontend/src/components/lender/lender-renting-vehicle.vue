@@ -4,7 +4,7 @@
       <h5 class="mb-0">RENTING VEHICLES</h5>
     </div>
     <div class="card-body">
-      <template v-for="vehicle of rentingVehicles">
+      <template v-for="vehicle of ownerRentingVehicles">
         <div :key="vehicle.vehicleId">
           <h4 class="card-title">ID: {{ vehicle.vehicleId }}</h4>
           <ul>
@@ -32,12 +32,30 @@
 
 <script>
 import axios from 'axios'
-import toastr from 'toastr'
+import VueCookies from 'vue-cookies'
 
 export default {
   name: 'lender-renting-vehicle',
-  props: {
-    rentingVehicles: []
+  data: function() {
+    return {
+      id: '',
+      ownerRentingVehicles: []
+    }
+  },
+  methods: {
+    fetchORV: async function(id) {
+      let url = 'http://localhost:3000/api/queries/getOwnerRentingVehicles?ownerId=' + id
+      let res = await axios.get(url)
+      this.ownerRentingVehicles = res.data
+    }
+  },
+  mounted: async function() {
+    try {
+      this.id = VueCookies.get('id')
+      setTimeout(await this.fetchORV(this.id), 3000);
+    } catch (err) {
+      consolo.error(err)
+    }
   }
 }
 </script>

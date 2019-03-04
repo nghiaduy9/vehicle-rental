@@ -37,9 +37,9 @@ import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import router from '../router.js'
 import toastr from 'toastr'
-// import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
-// const saltRounds = 10
+const saltRounds = 10
 toastr.options.toastClass = 'toastr'
 
 export default {
@@ -57,8 +57,8 @@ export default {
         this.accountType === 'renter' ? 'Renter' : 'VehicleOwner'
       }/${this.identityNumber}`
       const res = await axios.get(url)
-      // const compare = bcrypt.compareSync(this.password, res.data.password)
-      if (res.data.password === this.password) {
+      const compare = bcrypt.compareSync(this.password, res.data.password)
+      if (compare) {
         VueCookies.set('account-type', this.accountType)
         VueCookies.set('id', this.identityNumber)
         router.push('/dashboard')
