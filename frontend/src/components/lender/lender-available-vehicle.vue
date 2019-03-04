@@ -1,37 +1,31 @@
 <template>
-  <div class="card">
-    <div class="card-header">
+  <div class="card mb-5">
+    <div class="card-header d-flex justify-content-between align-items-center">
       <h5 class="mb-0">AVAILABLE VEHICLES</h5>
+      <button type="button" class="btn btn-primary" @click="addNewVehicle">Add vehicle</button>
     </div>
     <div class="card-body">
-      <template v-for="ownerAvailableVehicle of ownerAvailableVehicles">
-        <div :key="ownerAvailableVehicle.vehicleId">
-          <h4 class="card-title">ID: {{ ownerAvailableVehicle.vehicleId }}</h4>
-          <ul>
-            <li>License plate: {{ ownerAvailableVehicle.licensePlate }}</li>
-            <li>Identity card number: {{ ownerAvailableVehicle.identityCardNumber }}</li>
-            <li>Model: {{ ownerAvailableVehicle.model }}</li>
-            <li>Color: {{ ownerAvailableVehicle.color }}</li>
-            <li>State: {{ ownerAvailableVehicle.state }}</li>
-            <li>Year of manufacture: {{ ownerAvailableVehicle.yearOfManufacture }}</li>
-            <li>Skeleton number: {{ ownerAvailableVehicle.skeletonNumber }}</li>
-            <li>Engine number: {{ ownerAvailableVehicle.engineNumber }}</li>
-            <li>Price per day: {{ ownerAvailableVehicle.pricePerDay }}</li>
-          </ul>
-          <button 
-            type="button"
-            class="btn btn-danger"
-            @click="removeVehicle(ownerAvailableVehicle.vehicleId)">
-            Remove
-          </button>
-          <hr>
+      <template v-for="vehicle of availableVehicles">
+        <div class="card vehicle-card" :key="vehicle.vehicleId">
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li>License plate: {{ vehicle.licensePlate }}</li>
+              <li>Model: {{ vehicle.model }}</li>
+              <li>Color: {{ vehicle.color }}</li>
+              <li>State: {{ vehicle.state }}</li>
+              <li>Year of manufacture: {{ vehicle.yearOfManufacture }}</li>
+              <li>Skeleton number: {{ vehicle.skeletonNumber }}</li>
+              <li>Engine number: {{ vehicle.engineNumber }}</li>
+              <li>Renting price: {{ vehicle.pricePerDay }} USD/day</li>
+            </ul>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="removeVehicle(vehicle.vehicleId)"
+            >Remove</button>
+          </div>
         </div>
       </template>
-    </div>
-    <div class="card-footer">
-      <button type="button" class="btn btn-primary" @click="addNewVehicle">
-        Add new vehicle
-      </button>
     </div>
   </div>
 </template>
@@ -48,7 +42,7 @@ export default {
   data: function() {
     return {
       id: '',
-      ownerAvailableVehicles: []
+      availableVehicles: []
     }
   },
   methods: {
@@ -61,18 +55,20 @@ export default {
       toastr.success('Remove completed')
     },
     fetchOAV: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getOwnerAvailableVehicles?ownerId=' + id
+      let url =
+        'http://localhost:3000/api/queries/getOwnerAvailableVehicles?ownerId=' + id
       let res = await Axios.get(url)
-      this.ownerAvailableVehicles = res.data
+      this.availableVehicles = res.data
     }
   },
   mounted: async function() {
     try {
       this.id = VueCookies.get('id')
-      setTimeout(await this.fetchOAV(this.id), 3000)
+      await this.fetchOAV(this.id)
+      setInterval(async () => this.fetchOAV(this.id), 3000)
     } catch (err) {
       console.error(err)
     }
-  } 
+  }
 }
 </script>

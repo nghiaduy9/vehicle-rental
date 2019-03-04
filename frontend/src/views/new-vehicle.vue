@@ -1,43 +1,63 @@
 <template>
-  <div class="container w-50" v-if="cookieCheck">
-    <h4>Upload your vehicle and join our system</h4>
-    <form @submit.prevent="newVehicle">
-      <div class="form-group">
-        <input class="form-control" placeholder="License plate" type="text" v-model="licensePlate">
+  <div class="container w-25 mx-auto my-5" v-if="cookieCheck">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">NEW VEHICLE</h5>
+        <hr>
+        <form @submit.prevent="newVehicle">
+          <div class="form-group">
+            <input
+              class="form-control"
+              placeholder="License plate"
+              type="text"
+              v-model="licensePlate"
+            >
+          </div>
+          <div class="form-group">
+            <input class="form-control" placeholder="Model" type="text" v-model="model">
+          </div>
+          <div class="form-group">
+            <input class="form-control" placeholder="Color" type="text" v-model="colour">
+          </div>
+          <div class="form-group">
+            <input class="form-control" placeholder="State" type="text" v-model="state">
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              placeholder="Price per day"
+              type="number"
+              v-model="pricePerDay"
+            >
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              placeholder="Year of manufacture"
+              type="number"
+              v-model="yearOfManufacture"
+            >
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              placeholder="Skeleton Number"
+              type="text"
+              v-model="skeletonNumber"
+            >
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              placeholder="Engine Number"
+              type="text"
+              v-model="engineNumber"
+            >
+          </div>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
       </div>
-      <div class="form-group">
-        <input class="form-control" placeholder="Model" type="text" v-model="model">
-      </div>
-      <div class="form-group">
-        <input class="form-control" placeholder="Color" type="text" v-model="colour">
-      </div>
-      <div class="form-group">
-        <input class="form-control" placeholder="State" type="text" v-model="state">
-      </div>
-      <div class="form-group">
-        <input class="form-control" placeholder="Price per day" type="number" v-model="pricePerDay">
-      </div>
-      <div class="form-group">
-        <input
-          class="form-control"
-          placeholder="Year of manufacture"
-          type="number"
-          v-model="yearOfManufacture"
-        >
-      </div>
-      <div class="form-group">
-        <input
-          class="form-control"
-          placeholder="Skeleton Number"
-          type="text"
-          v-model="skeletonNumber"
-        >
-      </div>
-      <div class="form-group">
-        <input class="form-control" placeholder="Engine Number" type="text" v-model="engineNumber">
-      </div>
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -50,20 +70,20 @@ import toastr from 'toastr'
 toastr.options.toastClass = 'toastr'
 
 function IDGenerator() {
-	this.length = 8
-	this.timestamp = +new Date	 
-	var _getRandomInt = function( min, max ) {
-		return Math.floor( Math.random() * ( max - min + 1 ) ) + min
-	}	 
-	this.generate = function() {
-		var ts = this.timestamp.toString()
-		var parts = ts.split( "" ).reverse()
-		var id = ""	 
-		for( var i = 0; i < this.length; ++i ) {
-			var index = _getRandomInt( 0, parts.length - 1 )
-		  id += parts[index]
-		}	 
-	  return id
+  this.length = 8
+  this.timestamp = +new Date()
+  var _getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+  this.generate = function() {
+    var ts = this.timestamp.toString()
+    var parts = ts.split('').reverse()
+    var id = ''
+    for (var i = 0; i < this.length; ++i) {
+      var index = _getRandomInt(0, parts.length - 1)
+      id += parts[index]
+    }
+    return id
   }
 }
 export default {
@@ -102,10 +122,10 @@ export default {
       }
       let renter = {
         $class: 'org.vehiclerental.RenterConcept',
-        RenterIdentityCardNumber: "",
-        name: "",
-        address: "",
-        phone: ""
+        RenterIdentityCardNumber: '',
+        name: '',
+        address: '',
+        phone: ''
       }
       const generator = new IDGenerator()
       this.vehicleId = generator.generate()

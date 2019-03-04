@@ -1,5 +1,5 @@
 <template>
-  <div class="card my-3">
+  <div class="card mb-5">
     <div class="card-header">
       <h5 class="mb-0">PAYING VEHICLES</h5>
     </div>
@@ -64,10 +64,12 @@ export default {
         paid: 'true'
       }
       await axios.put(url, _rental)
-      let res = await axios.get('http://localhost:3000/api/Vehicle/' + rental.vehicle.vehicleId)
+      let res = await axios.get(
+        'http://localhost:3000/api/Vehicle/' + rental.vehicle.vehicleId
+      )
       let vehicle = res.data
       let _vehicle = {
-        $class: "org.vehiclerental.Vehicle",
+        $class: 'org.vehiclerental.Vehicle',
         licensePlate: vehicle.licensePlate,
         lender: vehicle.lender,
         identityCardNumber: vehicle.identityCardNumber,
@@ -80,12 +82,9 @@ export default {
         vehicleStatus: 'available',
         renter: vehicle.renter,
         pricePerDay: vehicle.pricePerDay,
-        timeBegin: vehicle.timeBegin,
+        timeBegin: vehicle.timeBegin
       }
-      await axios.put(
-        'http://localhost:3000/api/Vehicle/' + vehicle.vehicleId,
-        _vehicle
-      )
+      await axios.put('http://localhost:3000/api/Vehicle/' + vehicle.vehicleId, _vehicle)
       toastr.success('Success')
     },
     fetchLPA: async function(id) {
@@ -97,7 +96,7 @@ export default {
   mounted: async function() {
     try {
       this.id = VueCookies.get('id')
-      setTimeout(await this.fetchLPA(this.id), 3000);
+      setTimeout(await this.fetchLPA(this.id), 3000)
     } catch (err) {
       console.error(err)
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="card my-3">
+  <div class="card mb-5">
     <div class="card-header">
       <h5 class="mb-0">PAYING VEHICLES</h5>
     </div>
@@ -54,7 +54,7 @@ export default {
   mounted: async function() {
     try {
       this.id = VueCookies.get('id')
-      setTimeout(await this.fetchRPA(this.id), 3000);
+      setTimeout(await this.fetchRPA(this.id), 3000)
     } catch (err) {
       console.error(err)
     }

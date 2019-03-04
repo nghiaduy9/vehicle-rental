@@ -1,18 +1,18 @@
 <template>
-  <div id="dashboard" class="container my-5">
+  <div class="container my-5">
     <h1>DASHBOARD</h1>
     <div v-if="user === 'renter'">
       <RenterAvailableVehicle/>
       <RenterPendingVehicle/>
-      <RenterPayingVehicle/>
       <RenterRentingVehicle/>
+      <RenterPayingVehicle/>
       <RenterHistory/>
     </div>
     <div v-else>
       <LenderAvailableVehicle/>
       <LenderPendingVehicle/>
-      <LenderPayingVehicle/>
       <LenderRentingVehicle/>
+      <LenderPayingVehicle/>
       <LenderHistory/>
     </div>
   </div>
@@ -58,3 +58,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.vehicle-card {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.vehicle-card:not(:last-child) {
+  margin-bottom: 1rem;
+}
+</style>
