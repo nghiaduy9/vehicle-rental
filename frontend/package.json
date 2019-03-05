@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "Vehicle rental",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
+    "serve": "serve -l 8080 -s dist -n",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "serve": "^10.1.2",
     "vue-template-compiler": "^2.5.21"
   }
 }
