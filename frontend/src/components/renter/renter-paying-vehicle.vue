@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     fetchRPA: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getRenterPayingRental?renterId=' + id
+      let url = 'http://178.128.24.80:3000/api/queries/getRenterPayingRental?renterId=' + id
       let res = await Axios.get(url)
       this.payingAgreements = res.data
     }

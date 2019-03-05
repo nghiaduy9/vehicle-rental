@@ -50,13 +50,13 @@ export default {
       router.push('/new-vehicle')
     },
     removeVehicle: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let url = 'http://178.128.24.80:3000/api/Vehicle/' + id
       await Axios.delete(url)
       toastr.success('Remove completed')
     },
     fetchOAV: async function(id) {
       let url =
-        'http://localhost:3000/api/queries/getOwnerAvailableVehicles?ownerId=' + id
+        'http://178.128.24.80:3000/api/queries/getOwnerAvailableVehicles?ownerId=' + id
       let res = await Axios.get(url)
       this.availableVehicles = res.data
     }

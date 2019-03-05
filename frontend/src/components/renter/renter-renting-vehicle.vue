@@ -71,7 +71,7 @@ export default {
   methods: {
     pay: async function(vehicleId) {
       let vehicleResponse = await axios.get(
-        'http://localhost:3000/api/Vehicle/' + vehicleId
+        'http://178.128.24.80:3000/api/Vehicle/' + vehicleId
       )
       let vehicle = vehicleResponse.data
       let _timeEnd = new Date()
@@ -121,17 +121,17 @@ export default {
         currency: 'USD',
         paid: 'false'
       }
-      await axios.put('http://localhost:3000/api/Vehicle/' + vehicleId, vehicle_)
+      await axios.put('http://178.128.24.80:3000/api/Vehicle/' + vehicleId, vehicle_)
       toastr.options.positionClass = 'toast-top-center'
       toastr.info(_totalPrice + '$', 'Total price')
       const test = await axios.post(
-        'http://localhost:3000/api/RentalAgreement',
+        'http://178.128.24.80:3000/api/RentalAgreement',
         newRental
       )
     },
     fetchRRV: async function(id) {
       let url =
-        'http://localhost:3000/api/queries/getRenterRentingVehicles?renterId=' + id
+        'http://178.128.24.80:3000/api/queries/getRenterRentingVehicles?renterId=' + id
       let res = await axios.get(url)
       this.rentingVehicles = res.data
     }

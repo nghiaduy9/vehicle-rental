@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     accept: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let url = 'http://178.128.24.80:3000/api/Vehicle/' + id
       let response = await axios.get(url)
       let vehicle = response.data
       let _vehicle = {
@@ -74,7 +74,7 @@ export default {
       toastr.success('Accepted')
     },
     decline: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let url = 'http://178.128.24.80:3000/api/Vehicle/' + id
       let response = await axios.get(url)
       let vehicle = response.data
       let _timeBegin = new Date()
@@ -98,7 +98,7 @@ export default {
       toastr.success('Declined')
     },
     fetchOPV: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getOwnerPendingVehicles?ownerId=' + id
+      let url = 'http://178.128.24.80:3000/api/queries/getOwnerPendingVehicles?ownerId=' + id
       let res = await axios.get(url)
       this.pendingVehicles = []
       this.pendingVehicles = res.data

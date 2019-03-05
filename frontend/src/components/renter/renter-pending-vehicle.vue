@@ -44,7 +44,7 @@ export default {
   methods: {
     fetchRPV: async function(id) {
       let url =
-        'http://localhost:3000/api/queries/getRenterPendingVehicles?renterId=' + id
+        'http://178.128.24.80:3000/api/queries/getRenterPendingVehicles?renterId=' + id
       let res = await Axios.get(url)
       this.pendingVehicles = res.data
     }

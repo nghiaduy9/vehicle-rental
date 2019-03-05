@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     fetchORV: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getOwnerRentingVehicles?ownerId=' + id
+      let url = 'http://178.128.24.80:3000/api/queries/getOwnerRentingVehicles?ownerId=' + id
       let res = await axios.get(url)
       this.rentingVehicles = res.data
     }

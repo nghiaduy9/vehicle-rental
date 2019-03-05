@@ -74,7 +74,7 @@ export default {
           accountType: this.accountType,
           password: this.hash
         }
-        const res = await axios.post('http://localhost:3000/api/Renter', newUser)
+        const res = await axios.post('http://178.128.24.80:3000/api/Renter', newUser)
         if (res.status === 200) toastr.success('Success')
         else toastr.error('Identity card number existsed')
       } else {
@@ -87,7 +87,7 @@ export default {
           accountType: this.accountType,
           password: this.hash
         }
-        let res = await axios.post('http://localhost:3000/api/VehicleOwner', newUser)
+        let res = await axios.post('http://178.128.24.80:3000/api/VehicleOwner', newUser)
         if (res.status === 200) toastr.success('Success')
         else toastr.error('Identity card number exists already')
       }

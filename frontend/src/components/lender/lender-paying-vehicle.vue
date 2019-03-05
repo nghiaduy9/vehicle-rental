@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     accept: async function(id) {
-      const url = 'http://localhost:3000/api/RentalAgreement/' + id
+      const url = 'http://178.128.24.80:3000/api/RentalAgreement/' + id
       const response = await axios.get(url)
       const rental = response.data
       let _rental = {
@@ -70,7 +70,7 @@ export default {
       }
       await axios.put(url, _rental)
       let res = await axios.get(
-        'http://localhost:3000/api/Vehicle/' + rental.vehicle.vehicleId
+        'http://178.128.24.80:3000/api/Vehicle/' + rental.vehicle.vehicleId
       )
       let vehicle = res.data
       let _vehicle = {
@@ -89,11 +89,11 @@ export default {
         pricePerDay: vehicle.pricePerDay,
         timeBegin: vehicle.timeBegin
       }
-      await axios.put('http://localhost:3000/api/Vehicle/' + vehicle.vehicleId, _vehicle)
+      await axios.put('http://178.128.24.80:3000/api/Vehicle/' + vehicle.vehicleId, _vehicle)
       toastr.success('Success')
     },
     fetchLPA: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getOwnerPayingRental?ownerId=' + id
+      let url = 'http://178.128.24.80:3000/api/queries/getOwnerPayingRental?ownerId=' + id
       let res = await axios.get(url)
       this.payingAgreements = res.data
     }

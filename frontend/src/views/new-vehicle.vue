@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     newVehicle: async function() {
-      let url = 'http://localhost:3000/api/VehicleOwner/' + this.ownerId
+      let url = 'http://178.128.24.80:3000/api/VehicleOwner/' + this.ownerId
       let res = await axios.get(url)
       let owner = {
         $class: 'org.vehiclerental.OwnerConcept',
@@ -133,7 +133,7 @@ export default {
       }
       const generator = new IDGenerator()
       this.vehicleId = generator.generate()
-      let response = await axios.post('http://localhost:3000/api/Vehicle/', {
+      let response = await axios.post('http://178.128.24.80:3000/api/Vehicle/', {
         $class: 'org.vehiclerental.Vehicle',
         vehicleId: this.vehicleId,
         licensePlate: this.licensePlate,
