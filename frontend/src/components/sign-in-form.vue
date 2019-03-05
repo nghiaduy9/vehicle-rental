@@ -62,7 +62,7 @@ export default {
         VueCookies.set('account-type', this.accountType)
         VueCookies.set('id', this.identityNumber)
         router.push('/dashboard')
-      } else toastr.error('Please check your identity card number or password')
+      } else toastr.error('Please check your information')
     }
   }
 }
