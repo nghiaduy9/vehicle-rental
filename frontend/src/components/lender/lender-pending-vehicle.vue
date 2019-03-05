@@ -38,7 +38,7 @@
 <script>
 import axios from 'axios'
 import toastr from 'toastr'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 toastr.options.toastClass = 'toastr'
 
 export default {
@@ -106,7 +106,7 @@ export default {
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchOPV(this.id)
       setInterval(() => this.fetchOPV(this.id), 3000)
     } catch (err) {

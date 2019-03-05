@@ -21,13 +21,14 @@
               <li>Lender name: {{ vehicle.lender.name }}</li>
               <li>Lender phone: {{ vehicle.lender.phone }}</li>
               <li>Lender address: {{ vehicle.lender.address }}</li>
-              <li>Begin date: {{ vehicle.timeBegin }}</li>
+              <hr>
+              <li>Begin date: {{ (new Date(vehicle.timeBegin)).toDateString() }}</li>
             </ul>
             <button
               type="button"
               class="btn btn-primary"
               @click="pay(vehicle.vehicleId)"
-            >Return the vehicle</button>
+            >Return vehicle</button>
           </div>
         </div>
       </template>
@@ -37,7 +38,7 @@
 
 <script>
 import axios from 'axios'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import toastr from 'toastr'
 toastr.options.toastClass = 'toastr'
 
@@ -87,7 +88,7 @@ export default {
         state: vehicle.state,
         yearOfManufacture: vehicle.yearOfManufacture,
         skeletonNumber: vehicle.skeletonNumber,
-        engineNumber: vehicle.engineNumber, 
+        engineNumber: vehicle.engineNumber,
         pricePerDay: vehicle.pricePerDay
       }
       const generator = new IDGenerator()
@@ -123,7 +124,10 @@ export default {
       await axios.put('http://localhost:3000/api/Vehicle/' + vehicleId, vehicle_)
       toastr.options.positionClass = 'toast-top-center'
       toastr.info(_totalPrice + '$', 'Total price')
-      let test = await axios.post('http://localhost:3000/api/RentalAgreement', newRental)
+      const test = await axios.post(
+        'http://localhost:3000/api/RentalAgreement',
+        newRental
+      )
     },
     fetchRRV: async function(id) {
       let url =
@@ -134,7 +138,7 @@ export default {
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchRRV(this.id)
       setInterval(() => this.fetchRRV(this.id), 3000)
     } catch (err) {

@@ -89,15 +89,9 @@ export default {
         }
         let res = await axios.post('http://localhost:3000/api/VehicleOwner', newUser)
         if (res.status === 200) toastr.success('Success')
-        else toastr.error('Identity card number existsed')
+        else toastr.error('Identity card number exists already')
       }
     }
   }
 }
 </script>
-
-<style scoped>
-.btn-link {
-  cursor: pointer;
-}
-</style>

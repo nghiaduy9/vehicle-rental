@@ -1,61 +1,64 @@
 <template>
-  <div class="container w-25 mx-auto my-5" v-if="cookieCheck">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title text-center">NEW VEHICLE</h5>
-        <hr>
-        <form @submit.prevent="newVehicle">
-          <div class="form-group">
-            <input
-              class="form-control"
-              placeholder="License plate"
-              type="text"
-              v-model="licensePlate"
-            >
-          </div>
-          <div class="form-group">
-            <input class="form-control" placeholder="Model" type="text" v-model="model">
-          </div>
-          <div class="form-group">
-            <input class="form-control" placeholder="Color" type="text" v-model="colour">
-          </div>
-          <div class="form-group">
-            <input class="form-control" placeholder="State" type="text" v-model="state">
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control"
-              placeholder="Price per day"
-              type="number"
-              v-model="pricePerDay"
-            >
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control"
-              placeholder="Year of manufacture"
-              type="number"
-              v-model="yearOfManufacture"
-            >
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control"
-              placeholder="Skeleton Number"
-              type="text"
-              v-model="skeletonNumber"
-            >
-          </div>
-          <div class="form-group">
-            <input
-              class="form-control"
-              placeholder="Engine Number"
-              type="text"
-              v-model="engineNumber"
-            >
-          </div>
-          <button class="btn btn-primary" type="submit">Submit</button>
-        </form>
+  <div>
+    <TopBar/>
+    <div class="container w-25 mx-auto my-5" v-if="cookieCheck">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">NEW VEHICLE</h5>
+          <hr>
+          <form @submit.prevent="newVehicle">
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="License plate"
+                type="text"
+                v-model="licensePlate"
+              >
+            </div>
+            <div class="form-group">
+              <input class="form-control" placeholder="Model" type="text" v-model="model">
+            </div>
+            <div class="form-group">
+              <input class="form-control" placeholder="Color" type="text" v-model="colour">
+            </div>
+            <div class="form-group">
+              <input class="form-control" placeholder="State" type="text" v-model="state">
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="Price per day"
+                type="number"
+                v-model="pricePerDay"
+              >
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="Year of manufacture"
+                type="number"
+                v-model="yearOfManufacture"
+              >
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="Skeleton Number"
+                type="text"
+                v-model="skeletonNumber"
+              >
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                placeholder="Engine Number"
+                type="text"
+                v-model="engineNumber"
+              >
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -63,10 +66,11 @@
 
 <script>
 import axios from 'axios'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import router from '../router.js'
 import toastr from 'toastr'
 toastr.options.toastClass = 'toastr'
+import TopBar from '../components/top-bar'
 
 function IDGenerator() {
   this.length = 8
@@ -87,6 +91,7 @@ function IDGenerator() {
 }
 export default {
   name: 'NewVehicle',
+  components: { TopBar },
   data: function() {
     return {
       cookieCheck: '',
@@ -103,8 +108,8 @@ export default {
     }
   },
   mounted: function() {
-    let t = VueCookies.get('account-type')
-    this.ownerId = VueCookies.get('id')
+    let t = vuecookies.get('account-type')
+    this.ownerId = vuecookies.get('id')
     this.cookieCheck = false
     if (t === 'lender') this.cookieCheck = true
   },

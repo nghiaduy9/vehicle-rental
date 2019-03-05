@@ -33,7 +33,7 @@
 <script>
 import router from '../../router.js'
 import toastr from 'toastr'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import Axios from 'axios'
 toastr.options.toastClass = 'toastr'
 
@@ -63,7 +63,7 @@ export default {
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchOAV(this.id)
       setInterval(async () => this.fetchOAV(this.id), 3000)
     } catch (err) {

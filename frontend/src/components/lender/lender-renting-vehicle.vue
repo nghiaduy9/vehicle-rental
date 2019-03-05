@@ -21,7 +21,8 @@
               <li>Renter name: {{ vehicle.renter.name }}</li>
               <li>Renter phone: {{ vehicle.renter.phone }}</li>
               <li>Renter address: {{ vehicle.renter.address }}</li>
-              <li>Begin date: {{ vehicle.timeBegin }}</li>
+              <hr>
+              <li>Begin date: {{ (new Date(vehicle.timeBegin)).toDateString() }}</li>
             </ul>
           </div>
         </div>
@@ -32,7 +33,7 @@
 
 <script>
 import axios from 'axios'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 
 export default {
   name: 'lender-renting-vehicle',
@@ -51,7 +52,7 @@ export default {
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchORV(this.id)
       setInterval(() => this.fetchORV(this.id), 3000)
     } catch (err) {

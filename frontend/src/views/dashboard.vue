@@ -1,25 +1,28 @@
 <template>
-  <div class="container my-5">
-    <h1>DASHBOARD</h1>
-    <div v-if="user === 'renter'">
-      <RenterAvailableVehicle/>
-      <RenterPendingVehicle/>
-      <RenterRentingVehicle/>
-      <RenterPayingVehicle/>
-      <RenterHistory/>
-    </div>
-    <div v-else>
-      <LenderAvailableVehicle/>
-      <LenderPendingVehicle/>
-      <LenderRentingVehicle/>
-      <LenderPayingVehicle/>
-      <LenderHistory/>
+  <div>
+    <TopBar/>
+    <div class="container w-75 my-5">
+      <div v-if="accType === 'renter'">
+        <RenterAvailableVehicle/>
+        <RenterPendingVehicle/>
+        <RenterRentingVehicle/>
+        <RenterPayingVehicle/>
+        <RenterHistory/>
+      </div>
+      <div v-else>
+        <LenderAvailableVehicle/>
+        <LenderPendingVehicle/>
+        <LenderRentingVehicle/>
+        <LenderPayingVehicle/>
+        <LenderHistory/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import vuecookies from 'vue-cookies'
+import TopBar from '../components/top-bar'
 import LenderAvailableVehicle from '../components/lender/lender-available-vehicle'
 import LenderHistory from '../components/lender/lender-history'
 import LenderPayingVehicle from '../components/lender/lender-paying-vehicle'
@@ -30,10 +33,12 @@ import RenterHistory from '../components/renter/renter-history'
 import RenterPayingVehicle from '../components/renter/renter-paying-vehicle'
 import RenterPendingVehicle from '../components/renter/renter-pending-vehicle'
 import RenterRentingVehicle from '../components/renter/renter-renting-vehicle'
+import router from '../router'
 
 export default {
   name: 'dashboard',
   components: {
+    TopBar,
     LenderAvailableVehicle,
     LenderHistory,
     LenderPayingVehicle,
@@ -46,12 +51,13 @@ export default {
     RenterRentingVehicle
   },
   data: function() {
-    return { user: '', id: '' }
+    return { accType: '', id: '' }
   },
   mounted: async function() {
     try {
-      this.user = await vuecookies.get('account-type')
       this.id = await vuecookies.get('id')
+      this.accType = await vuecookies.get('account-type')
+      if (!this.id) router.push('/login')
     } catch (err) {
       console.error(err)
     }
@@ -60,10 +66,10 @@ export default {
 </script>
 
 <style lang="scss">
-.vehicle-card {
+.card.vehicle-card {
   background-color: rgba(0, 0, 0, 0.03);
 }
-.vehicle-card:not(:last-child) {
+.card.vehicle-card:not(:last-child) {
   margin-bottom: 1rem;
 }
 </style>

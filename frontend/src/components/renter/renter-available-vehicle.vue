@@ -27,7 +27,7 @@
 
 <script>
 import toastr from 'toastr'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import Axios from 'axios'
 
 toastr.options.toastClass = 'toastr'
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     rent: async function(vehicleId) {
-      let renterId = await VueCookies.get('id')
+      let renterId = await vuecookies.get('id')
       let renterResponse = await Axios.get('http://localhost:3000/api/Renter/' + renterId)
       let _renter = renterResponse.data
       let renter = {

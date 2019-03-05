@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import Axios from 'axios'
 
 export default {
@@ -51,7 +51,7 @@ export default {
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchRPV(this.id)
       setInterval(() => this.fetchRPV(this.id), 3000)
     } catch (err) {
