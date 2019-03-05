@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import Axios from 'axios'
 
 export default {
@@ -44,14 +44,14 @@ export default {
   methods: {
     fetchRPV: async function(id) {
       let url =
-        'http://localhost:3000/api/queries/getRenterPendingVehicles?renterId=' + id
+        'http://178.128.24.80:3000/api/queries/getRenterPendingVehicles?renterId=' + id
       let res = await Axios.get(url)
       this.pendingVehicles = res.data
     }
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchRPV(this.id)
       setInterval(() => this.fetchRPV(this.id), 3000)
     } catch (err) {

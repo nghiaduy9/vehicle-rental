@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="signin">
+  <form @submit.prevent="signIn">
     <div class="form-group">
       <select class="form-control" v-model="accountType" required>
         <option value selected>Account type...</option>
@@ -34,7 +34,7 @@
 
 <script>
 import axios from 'axios'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import router from '../router.js'
 import toastr from 'toastr'
 import bcrypt from 'bcryptjs'
@@ -52,24 +52,26 @@ export default {
     }
   },
   methods: {
-    signin: async function() {
-      const url = `http://localhost:3000/api/${
+    signIn: async function() {
+      const url = `http://178.128.24.80:3000/api/${
         this.accountType === 'renter' ? 'Renter' : 'VehicleOwner'
       }/${this.identityNumber}`
-      const res = await axios.get(url)
-      const compare = bcrypt.compareSync(this.password, res.data.password)
-      if (compare) {
-        VueCookies.set('account-type', this.accountType)
-        VueCookies.set('id', this.identityNumber)
-        router.push('/dashboard')
-      } else toastr.error('Please check your information')
+      try {
+        const { data } = await axios.get(url, { timeout: 3000 })
+        const compare = await bcrypt.compare(this.password, data.password)
+        if (compare) {
+          vuecookies.set('id', this.identityNumber)
+          vuecookies.set('fullname', data.name)
+          vuecookies.set('account-type', this.accountType)
+          router.push('/dashboard')
+        } else toastr.error('Please recheck password')
+      } catch (err) {
+        toastr.error('Please recheck your ID card number')
+      }
     }
+  },
+  mounted: function() {
+    if (vuecookies.get('id')) router.push('/dashboard')
   }
 }
 </script>
-
-<style scoped>
-.btn-link {
-  cursor: pointer;
-}
-</style>

@@ -1,16 +1,12 @@
-<template>
-  <div>
-    <h1>This is the home page</h1>
-  </div>
-</template>
-
 <script>
+import vuecookies from 'vue-cookies'
 import router from '../router.js'
 
 export default {
   name: 'Index',
   mounted: function() {
-    router.push('/login')
+    if (vuecookies.get('id')) router.push('/dashboard')
+    else router.push('/login')
   }
 }
 </script>

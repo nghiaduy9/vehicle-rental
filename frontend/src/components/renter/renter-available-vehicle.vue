@@ -16,6 +16,11 @@
               <li>Skeleton number: {{ vehicle.skeletonNumber }}</li>
               <li>Engine number: {{ vehicle.engineNumber }}</li>
               <li>Renting price: {{ vehicle.pricePerDay }} USD/day</li>
+              <hr>
+              <li>Lender ID card number: {{ vehicle.lender.OwnerIdentityCardNumber }}</li>
+              <li>Lender name: {{ vehicle.lender.name }}</li>
+              <li>Lender phone: {{ vehicle.lender.phone }}</li>
+              <li>Lender address: {{ vehicle.lender.address }}</li>
             </ul>
             <button type="button" class="btn btn-primary" @click="rent(vehicle.vehicleId)">Rent</button>
           </div>
@@ -27,7 +32,7 @@
 
 <script>
 import toastr from 'toastr'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import Axios from 'axios'
 
 toastr.options.toastClass = 'toastr'
@@ -41,8 +46,8 @@ export default {
   },
   methods: {
     rent: async function(vehicleId) {
-      let renterId = await VueCookies.get('id')
-      let renterResponse = await Axios.get('http://localhost:3000/api/Renter/' + renterId)
+      let renterId = await vuecookies.get('id')
+      let renterResponse = await Axios.get('http://178.128.24.80:3000/api/Renter/' + renterId)
       let _renter = renterResponse.data
       let renter = {
         $class: 'org.vehiclerental.RenterConcept',
@@ -52,7 +57,7 @@ export default {
         phone: _renter.phone
       }
       let vehicleResponse = await Axios.get(
-        'http://localhost:3000/api/Vehicle/' + vehicleId
+        'http://178.128.24.80:3000/api/Vehicle/' + vehicleId
       )
       let vehicle = vehicleResponse.data
       let _timeBegin = new Date()
@@ -72,11 +77,11 @@ export default {
         pricePerDay: vehicle.pricePerDay,
         timeBegin: _timeBegin
       }
-      await Axios.put('http://localhost:3000/api/Vehicle/' + vehicleId, _vehicle)
+      await Axios.put('http://178.128.24.80:3000/api/Vehicle/' + vehicleId, _vehicle)
       toastr.success('Success')
     },
     fetchRAV: async function() {
-      let url = 'http://localhost:3000/api/queries/getAvailableVehicles'
+      let url = 'http://178.128.24.80:3000/api/queries/getAvailableVehicles'
       let res = await Axios.get(url)
       this.availableVehicles = []
       this.availableVehicles = res.data

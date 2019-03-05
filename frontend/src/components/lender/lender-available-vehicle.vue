@@ -33,7 +33,7 @@
 <script>
 import router from '../../router.js'
 import toastr from 'toastr'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import Axios from 'axios'
 toastr.options.toastClass = 'toastr'
 
@@ -50,20 +50,20 @@ export default {
       router.push('/new-vehicle')
     },
     removeVehicle: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let url = 'http://178.128.24.80:3000/api/Vehicle/' + id
       await Axios.delete(url)
       toastr.success('Remove completed')
     },
     fetchOAV: async function(id) {
       let url =
-        'http://localhost:3000/api/queries/getOwnerAvailableVehicles?ownerId=' + id
+        'http://178.128.24.80:3000/api/queries/getOwnerAvailableVehicles?ownerId=' + id
       let res = await Axios.get(url)
       this.availableVehicles = res.data
     }
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchOAV(this.id)
       setInterval(async () => this.fetchOAV(this.id), 3000)
     } catch (err) {

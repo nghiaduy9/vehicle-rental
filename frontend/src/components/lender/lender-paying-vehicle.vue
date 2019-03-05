@@ -4,29 +4,34 @@
       <h5 class="mb-0">PAYING VEHICLES</h5>
     </div>
     <div class="card-body">
-      <template v-for="agreement of lenderPayingAgreements">
-        <div :key="agreement.rentalId">
-          <h4 class="card-title">ID: {{ agreement.rentalId }}</h4>
-          <ul>
-            <li>License plate: {{ agreement.vehicle.licensePlate }}</li>
-            <li>Identity card number: {{ agreement.vehicle.identityCardNumber }}</li>
-            <li>Model: {{ agreement.vehicle.model }}</li>
-            <li>Color: {{ agreement.vehicle.color }}</li>
-            <li>State: {{ agreement.vehicle.state }}</li>
-            <li>Year of manufacture: {{ agreement.vehicle.yearOfManufacture }}</li>
-            <li>Skeleton number: {{ agreement.vehicle.skeletonNumber }}</li>
-            <li>Engine number: {{ agreement.vehicle.engineNumber }}</li>
-            <li>Price per day: {{ agreement.vehicle.pricePerDay }}</li>
-            <li>Renter identity card number: {{ agreement.renter.RenterIdentityCardNumber }}</li>
-            <li>Renter name: {{ agreement.renter.name }}</li>
-            <li>Renter phone: {{ agreement.renter.phone }}</li>
-            <li>Renter address: {{ agreement.renter.address }}</li>
-            <li>Begin: {{ agreement.timeBegin }}</li>
-            <li>End: {{ agreement.timeEnd }}</li>
-            <li>Total price: {{ agreement.totalPrice }}</li>
-          </ul>
-          <button type="button" class="btn btn-success" @click="accept(agreement.rentalId)">Accept</button>
-          <hr>
+      <template v-for="agreement of payingAgreements">
+        <div class="card vehicle-card" :key="agreement.rentalId">
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li>License plate: {{ agreement.vehicle.licensePlate }}</li>
+              <li>Model: {{ agreement.vehicle.model }}</li>
+              <li>Color: {{ agreement.vehicle.color }}</li>
+              <li>State: {{ agreement.vehicle.state }}</li>
+              <li>Year of manufacture: {{ agreement.vehicle.yearOfManufacture }}</li>
+              <li>Skeleton number: {{ agreement.vehicle.skeletonNumber }}</li>
+              <li>Engine number: {{ agreement.vehicle.engineNumber }}</li>
+              <li>Renting price: {{ agreement.vehicle.pricePerDay }} USD/day</li>
+              <hr>
+              <li>Renter ID card number: {{ agreement.renter.RenterIdentityCardNumber }}</li>
+              <li>Renter name: {{ agreement.renter.name }}</li>
+              <li>Renter phone: {{ agreement.renter.phone }}</li>
+              <li>Renter address: {{ agreement.renter.address }}</li>
+              <hr>
+              <li>Begin date: {{ (new Date(agreement.timeBegin)).toDateString() }}</li>
+              <li>End date: {{ (new Date(agreement.timeEnd)).toDateString() }}</li>
+              <li>Total price: {{ agreement.totalPrice }} USD</li>
+            </ul>
+            <button
+              type="button"
+              class="btn btn-success"
+              @click="accept(agreement.rentalId)"
+            >Confirm</button>
+          </div>
         </div>
       </template>
     </div>
@@ -34,7 +39,7 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 import axios from 'axios'
 import toastr from 'toastr'
 toastr.options.toastClass = 'toastr'
@@ -44,12 +49,12 @@ export default {
   data: function() {
     return {
       id: '',
-      lenderPayingAgreements: []
+      payingAgreements: []
     }
   },
   methods: {
     accept: async function(id) {
-      const url = 'http://localhost:3000/api/RentalAgreement/' + id
+      const url = 'http://178.128.24.80:3000/api/RentalAgreement/' + id
       const response = await axios.get(url)
       const rental = response.data
       let _rental = {
@@ -65,7 +70,7 @@ export default {
       }
       await axios.put(url, _rental)
       let res = await axios.get(
-        'http://localhost:3000/api/Vehicle/' + rental.vehicle.vehicleId
+        'http://178.128.24.80:3000/api/Vehicle/' + rental.vehicle.vehicleId
       )
       let vehicle = res.data
       let _vehicle = {
@@ -84,18 +89,18 @@ export default {
         pricePerDay: vehicle.pricePerDay,
         timeBegin: vehicle.timeBegin
       }
-      await axios.put('http://localhost:3000/api/Vehicle/' + vehicle.vehicleId, _vehicle)
+      await axios.put('http://178.128.24.80:3000/api/Vehicle/' + vehicle.vehicleId, _vehicle)
       toastr.success('Success')
     },
     fetchLPA: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getOwnerPayingRental?ownerId=' + id
+      let url = 'http://178.128.24.80:3000/api/queries/getOwnerPayingRental?ownerId=' + id
       let res = await axios.get(url)
-      this.lenderPayingAgreements = res.data
+      this.payingAgreements = res.data
     }
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchLPA(this.id)
       setInterval(() => this.fetchLPA(this.id), 3000)
     } catch (err) {

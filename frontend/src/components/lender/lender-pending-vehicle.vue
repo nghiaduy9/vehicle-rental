@@ -38,7 +38,7 @@
 <script>
 import axios from 'axios'
 import toastr from 'toastr'
-import VueCookies from 'vue-cookies'
+import vuecookies from 'vue-cookies'
 toastr.options.toastClass = 'toastr'
 
 export default {
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     accept: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let url = 'http://178.128.24.80:3000/api/Vehicle/' + id
       let response = await axios.get(url)
       let vehicle = response.data
       let _vehicle = {
@@ -74,7 +74,7 @@ export default {
       toastr.success('Accepted')
     },
     decline: async function(id) {
-      let url = 'http://localhost:3000/api/Vehicle/' + id
+      let url = 'http://178.128.24.80:3000/api/Vehicle/' + id
       let response = await axios.get(url)
       let vehicle = response.data
       let _timeBegin = new Date()
@@ -98,7 +98,7 @@ export default {
       toastr.success('Declined')
     },
     fetchOPV: async function(id) {
-      let url = 'http://localhost:3000/api/queries/getOwnerPendingVehicles?ownerId=' + id
+      let url = 'http://178.128.24.80:3000/api/queries/getOwnerPendingVehicles?ownerId=' + id
       let res = await axios.get(url)
       this.pendingVehicles = []
       this.pendingVehicles = res.data
@@ -106,7 +106,7 @@ export default {
   },
   mounted: async function() {
     try {
-      this.id = VueCookies.get('id')
+      this.id = vuecookies.get('id')
       await this.fetchOPV(this.id)
       setInterval(() => this.fetchOPV(this.id), 3000)
     } catch (err) {
