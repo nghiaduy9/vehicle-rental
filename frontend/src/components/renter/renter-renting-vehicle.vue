@@ -27,7 +27,7 @@
               type="button"
               class="btn btn-primary"
               @click="pay(vehicle.vehicleId)"
-            >Return the vehicle & Pay</button>
+            >Return the vehicle</button>
           </div>
         </div>
       </template>
@@ -137,7 +137,7 @@ export default {
     try {
       this.id = VueCookies.get('id')
       await this.fetchRRV(this.id)
-      setTimeout(() => this.fetchRRV(this.id), 3000)
+      setInterval(() => this.fetchRRV(this.id), 3000)
     } catch (err) {
       console.error(err)
     }

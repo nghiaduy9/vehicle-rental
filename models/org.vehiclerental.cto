@@ -79,8 +79,7 @@ asset RentalAgreement identified by rentalId{
   o OwnerConcept lender
   o RenterConcept renter
   o VehicleConcept vehicle
-  o String deposit
-  o DateTime timeBegin 
+  o DateTime timeBegin
   o DateTime timeEnd
   o Double totalPrice
   o String currency default = 'USD'
@@ -91,11 +90,11 @@ transaction Rental {
   --> RentalAgreement rentalAgreement
 }
 
-transaction AcceptRental {  
+transaction AcceptRental {
   --> RentalAgreement rentalAgreement
 }
 
-transaction Payment { 
+transaction Payment {
   --> RentalAgreement rentalAgreement
 }
 

@@ -66,7 +66,6 @@ import axios from 'axios'
 import VueCookies from 'vue-cookies'
 import router from '../router.js'
 import toastr from 'toastr'
-
 toastr.options.toastClass = 'toastr'
 
 function IDGenerator() {
@@ -146,12 +145,8 @@ export default {
         pricePerDay: this.pricePerDay,
         timeBegin: '1970-01-01T00:00:00.000Z'
       })
-      if (response.status === 200) {
-        toastr.success('Successful')
-        setTimeout(function() {
-          router.push('/dashboard')
-        }, 3000)
-      } else toastr.error('Unsuccessful')
+      if (response.status === 200) router.push('/dashboard')
+      else toastr.error('Unsuccessful')
     }
   }
 }

@@ -96,7 +96,8 @@ export default {
   mounted: async function() {
     try {
       this.id = VueCookies.get('id')
-      setTimeout(await this.fetchLPA(this.id), 3000)
+      await this.fetchLPA(this.id)
+      setInterval(() => this.fetchLPA(this.id), 3000)
     } catch (err) {
       console.error(err)
     }
