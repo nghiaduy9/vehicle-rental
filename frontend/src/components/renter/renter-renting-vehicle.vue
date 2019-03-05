@@ -87,22 +87,11 @@ export default {
         state: vehicle.state,
         yearOfManufacture: vehicle.yearOfManufacture,
         skeletonNumber: vehicle.skeletonNumber,
-        engineNumber: vehicle.engineNumber
+        engineNumber: vehicle.engineNumber, 
+        pricePerDay: vehicle.pricePerDay
       }
       const generator = new IDGenerator()
       let _rentalId = generator.generate()
-      let newRental = {
-        $class: 'org.vehiclerental.RentalAgreement',
-        rentalId: _rentalId,
-        lender: vehicle.lender,
-        renter: vehicle.renter,
-        vehicle: _vehicle,
-        timeBegin: vehicle.timeBegin,
-        timeEnd: _timeEnd,
-        totalPrice: _totalPrice,
-        currency: 'USD',
-        paid: 'false'
-      }
       let vehicle_ = {
         $class: 'org.vehiclerental.Vehicle',
         licensePlate: vehicle.licensePlate,
@@ -119,8 +108,18 @@ export default {
         pricePerDay: vehicle.pricePerDay,
         timeBegin: vehicle.timeBegin
       }
-      console.log(vehicle_)
-
+      let newRental = {
+        $class: 'org.vehiclerental.RentalAgreement',
+        rentalId: _rentalId,
+        lender: vehicle.lender,
+        renter: vehicle.renter,
+        vehicle: _vehicle,
+        timeBegin: vehicle.timeBegin,
+        timeEnd: _timeEnd,
+        totalPrice: _totalPrice,
+        currency: 'USD',
+        paid: 'false'
+      }
       await axios.put('http://localhost:3000/api/Vehicle/' + vehicleId, vehicle_)
       toastr.options.positionClass = 'toast-top-center'
       toastr.info(_totalPrice + '$', 'Total price')

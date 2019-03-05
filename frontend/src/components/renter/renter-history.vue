@@ -54,7 +54,7 @@ export default {
   mounted: async function() {
     try {
       this.id = VueCookies.get('id')
-      setTimeout(await this.fetchRRA(this.id), 3000)
+      setInterval(() => this.fetchRRA(this.id), 3000)
     } catch (err) {
       console.error(err)
     }
